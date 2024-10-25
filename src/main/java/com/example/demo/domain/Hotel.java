@@ -1,9 +1,7 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -41,7 +39,6 @@ public class Hotel extends BaseEntity {
         this.rating = rating;
     }
 
-    // TODO: check
     @OneToOne
     public Address getAddress() {
         return address;
@@ -51,7 +48,7 @@ public class Hotel extends BaseEntity {
         this.address = address;
     }
 
-   // TODO: Add a relation
+   @OneToMany(mappedBy = "hotel")
     public List<Room> getRoomList() {
         return roomList;
     }
