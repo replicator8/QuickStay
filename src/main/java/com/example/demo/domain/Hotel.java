@@ -20,7 +20,7 @@ public class Hotel {
         this.address = address;
     }
 
-    @Column(name = "name", nullable = false, length = 127)
+    @Column(name = "name", nullable = false, unique = true, length = 127)
     public String getName() {
         return name;
     }
