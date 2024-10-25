@@ -3,7 +3,6 @@ package com.example.demo.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
 import java.time.LocalDate;
 
 @Entity
@@ -25,6 +24,7 @@ public class Booking {
         this.duration = duration;
     }
 
+    // TODO: relation
     public Hotel getHotel() {
         return hotel;
     }
@@ -33,6 +33,7 @@ public class Booking {
         this.hotel = hotel;
     }
 
+    // TODO: add relation
     public User getUser() {
         return user;
     }

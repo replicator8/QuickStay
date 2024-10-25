@@ -2,8 +2,11 @@ package com.example.demo.domain;
 
 import com.example.demo.domain.enums.RoomStatus;
 import com.example.demo.domain.enums.RoomType;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.EnumType;
 import java.net.URL;
 
 @Entity
@@ -25,6 +28,7 @@ public class Room {
         this.photo = photo;
     }
 
+    // TODO: add relation
     public Hotel getHotel() {
         return hotel;
     }
