@@ -11,7 +11,7 @@ import java.net.URL;
 
 @Entity
 @Table(name = "address")
-public class Room {
+public class Room extends BaseEntity {
     private Hotel hotel;
     private RoomStatus roomStatus;
     private RoomType roomType;

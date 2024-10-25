@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "address")
-public class Hotel {
+public class Hotel extends BaseEntity {
     private String name;
     private Double rating;
     private Address address;
