@@ -2,11 +2,8 @@ package com.example.demo.domain;
 
 import com.example.demo.domain.enums.RoomStatus;
 import com.example.demo.domain.enums.RoomType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
+
 import java.net.URL;
 
 @Entity
@@ -28,7 +25,8 @@ public class Room extends BaseEntity {
         this.photo = photo;
     }
 
-    // TODO: add relation
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
     public Hotel getHotel() {
         return hotel;
     }
