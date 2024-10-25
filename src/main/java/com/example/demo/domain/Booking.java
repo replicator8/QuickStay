@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "booking")
+@Table(name = "bookings")
 public class Booking extends BaseEntity {
     private Hotel hotel;
     private User user;

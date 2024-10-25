@@ -10,7 +10,7 @@ import jakarta.persistence.EnumType;
 import java.net.URL;
 
 @Entity
-@Table(name = "address")
+@Table(name = "rooms")
 public class Room extends BaseEntity {
     private Hotel hotel;
     private RoomStatus roomStatus;

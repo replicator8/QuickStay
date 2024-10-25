@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "address")
+@Table(name = "hotels")
 public class Hotel extends BaseEntity {
     private String name;
     private Double rating;
