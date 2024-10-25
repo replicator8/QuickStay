@@ -5,19 +5,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.util.List;
+
 @Entity
 @Table(name = "address")
 public class Hotel {
     private String name;
     private Double rating;
     private Address address;
+    private List<Room> roomList;
 
     protected Hotel() {}
 
-    public Hotel(String name, Double rating, Address address) {
+    public Hotel(String name, Double rating, Address address, List<Room> roomList) {
         this.name = name;
         this.rating = rating;
         this.address = address;
+        this.roomList = roomList;
     }
 
     @Column(name = "name", nullable = false, unique = true, length = 127)
@@ -38,6 +42,7 @@ public class Hotel {
         this.rating = rating;
     }
 
+    // TODO: check
     @OneToOne
     public Address getAddress() {
         return address;
@@ -45,5 +50,14 @@ public class Hotel {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+   // TODO: Add a relation
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
     }
 }
