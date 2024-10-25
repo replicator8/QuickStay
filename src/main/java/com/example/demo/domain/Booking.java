@@ -1,8 +1,7 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -24,7 +23,8 @@ public class Booking extends BaseEntity {
         this.duration = duration;
     }
 
-    // TODO: relation
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
     public Hotel getHotel() {
         return hotel;
     }
@@ -33,7 +33,8 @@ public class Booking extends BaseEntity {
         this.hotel = hotel;
     }
 
-    // TODO: add relation
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     public User getUser() {
         return user;
     }
