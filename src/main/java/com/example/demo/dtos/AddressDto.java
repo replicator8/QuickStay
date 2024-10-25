@@ -1,16 +1,26 @@
 package com.example.demo.dtos;
 
 public class AddressDto {
+    private String id;
     private String country;
     private String city;
     private String street;
     private String house;
 
-    public AddressDto(String country, String city, String street, String house) {
+    public AddressDto(String id, String country, String city, String street, String house) {
+        this.id = id;
         this.country = country;
         this.city = city;
         this.street = street;
         this.house = house;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCountry() {
