@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class User extends BaseEntity {
         this.balance = balance;
     }
 
-    // TODO: Add relation
+    @OneToMany(mappedBy = "user")
     public List<Booking> getBookingList() {
         return bookingList;
     }
