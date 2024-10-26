@@ -28,12 +28,12 @@ public class HotelRepositoryDaoImpl extends GenericRepository<Hotel, String> imp
     }
 
     @Override
-    public double getRating() {
-        return 0;
+    public double getRating(String id) {
+        return entityManager.find(Hotel.class, id).getRating();
     }
 
     @Override
-    public List<Room> getAllRooms() {
+    public List<Room> getAllRooms(String id) {
         return List.of();
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 public interface HotelRepository {
     String findByName(String name);
     String findByAddress(String name);
-    double getRating();
-    List<Room> getAllRooms();
+    double getRating(String id);
+    List<Room> getAllRooms(String id);
     Room getRoomById(String uuid);
 }
