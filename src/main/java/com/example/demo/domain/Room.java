@@ -3,13 +3,13 @@ package com.example.demo.domain;
 import com.example.demo.domain.enums.RoomStatus;
 import com.example.demo.domain.enums.RoomType;
 import jakarta.persistence.*;
-
 import java.net.URL;
 
 @Entity
 @Table(name = "rooms")
 public class Room extends BaseEntity {
     private Hotel hotel;
+    private String description;
     private RoomStatus roomStatus;
     private RoomType roomType;
     private double price;
@@ -17,8 +17,9 @@ public class Room extends BaseEntity {
 
     protected Room() {}
 
-    public Room(Hotel hotel, RoomStatus roomStatus, RoomType roomType, double price, URL photo) {
+    public Room(Hotel hotel, String description, RoomStatus roomStatus, RoomType roomType, double price, URL photo) {
         this.hotel = hotel;
+        this.description = description;
         this.roomStatus = roomStatus;
         this.roomType = roomType;
         this.price = price;
@@ -71,5 +72,14 @@ public class Room extends BaseEntity {
 
     public void setPhoto(URL photo) {
         this.photo = photo;
+    }
+
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
