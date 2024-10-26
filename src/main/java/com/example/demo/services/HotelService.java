@@ -10,5 +10,5 @@ public interface HotelService {
     Room findRoomById(String uuid);
     List<Room> getAllFreeRooms(LocalDate start, LocalDate end);
     double getRating(String uuid);
-    void addRating(double userRating);
+    void addRating(String uuid, double userRating);
 }

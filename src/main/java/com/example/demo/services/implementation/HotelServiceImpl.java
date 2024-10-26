@@ -28,6 +28,13 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    public void addRating(String uuid, double userRating) {
+        Hotel hotel = hotelRepository.findById(uuid);
+        if (userRating >= 1 && userRating <= 5)
+            hotel.setRating(userRating);
+    }
+
+    @Override
     public Room findRoomById(String uuid) {
         return null;
     }
@@ -35,10 +42,5 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<Room> getAllFreeRooms(LocalDate start, LocalDate end) {
         return List.of();
-    }
-
-    @Override
-    public void addRating(double userRating) {
-
     }
 }

@@ -13,6 +13,7 @@ public class Hotel extends BaseEntity {
     private int roomsCount;
     private URL photo;
     private List<Room> roomList;
+    private int ratingCount;
 
     protected Hotel() {}
 
@@ -40,7 +41,9 @@ public class Hotel extends BaseEntity {
     }
 
     public void setRating(Double rating) {
-        this.rating = rating;
+        ratingCount++;
+        this.rating += rating;
+        this.rating /= ratingCount;
     }
 
     @OneToOne
@@ -82,5 +85,14 @@ public class Hotel extends BaseEntity {
 
     public void setRoomsCount(int roomsCount) {
         this.roomsCount = roomsCount;
+    }
+
+    @Transient
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 }
