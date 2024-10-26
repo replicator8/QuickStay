@@ -18,6 +18,11 @@ public class HotelRepositoryDaoImpl extends GenericRepository<Hotel, String> imp
     }
 
     @Override
+    public Hotel findById(String uuid) {
+        return entityManager.find(Hotel.class, uuid);
+    }
+
+    @Override
     public String findByName(String name) {
         return entityManager.find(Hotel.class, name).getName();
     }
