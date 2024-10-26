@@ -13,8 +13,8 @@ public class HotelRepositoryDaoImpl extends GenericRepository<Hotel, String> imp
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public HotelRepositoryDaoImpl(Class<Hotel> hotelClass) {
-        super(hotelClass);
+    public HotelRepositoryDaoImpl() {
+        super(Hotel.class);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class HotelRepositoryDaoImpl extends GenericRepository<Hotel, String> imp
 
     @Override
     public String findByAddress(String name) {
-        return entityManager.find(Hotel.class, name).getAllAddress();
+        return entityManager.find(Hotel.class, name).getFullAddress();
     }
 
     @Override

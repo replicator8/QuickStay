@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepositoryDaoImpl extends GenericRepository<User, String> implements UserRepository {
 
-    public UserRepositoryDaoImpl(Class<User> userClass) { super(userClass); }
+    public UserRepositoryDaoImpl() {
+        super(User.class);
+    }
 
     @Override
     public User findById(String uuid) {

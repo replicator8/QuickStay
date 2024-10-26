@@ -48,7 +48,8 @@ public class Hotel extends BaseEntity {
         return address;
     }
 
-    public String getAllAddress() {
+    @Transient
+    public String getFullAddress() {
         return address.getCountry() + ", " + address.getCity() + ", " + address.getStreet() + " " + address.getHouse();
     }
 
