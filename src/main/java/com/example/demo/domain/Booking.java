@@ -1,36 +1,35 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "bookings")
 public class Booking extends BaseEntity {
-    private Hotel hotel;
+    private Room room;
     private User user;
-    private LocalDate date;
+    private LocalDate dateStart;
     private double price;
     private int duration;
 
     protected Booking() {}
 
-    public Booking(Hotel hotel, User user, LocalDate date, double price, int duration) {
-        this.hotel = hotel;
+    public Booking(Room room, User user, LocalDate dateStart, double price, int duration) {
+        this.room = room;
         this.user = user;
-        this.date = date;
+        this.dateStart = dateStart;
         this.price = price;
         this.duration = duration;
     }
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    public Hotel getHotel() {
-        return hotel;
+    @JoinColumn(name = "room_id")
+    public Room getRoom() {
+        return room;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public void setHotel(Room room) {
+        this.room = room;
     }
 
     @ManyToOne
@@ -45,11 +44,11 @@ public class Booking extends BaseEntity {
 
     @Column(name = "date", nullable = false)
     public LocalDate getDate() {
-        return date;
+        return dateStart;
     }
 
     public void setDate(LocalDate date) {
-        this.date = date;
+        this.dateStart = date;
     }
 
     @Column(name = "price", nullable = false)
