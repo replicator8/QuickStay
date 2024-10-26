@@ -1,9 +1,10 @@
-package com.example.demo.repositories.implementation;
+package com.example.demo.repositories;
 
+import com.example.demo.domain.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
-    String findByFirstNameAndLastName(String firstName, String lastName);
+    User findById(String uuid);
     double getBalance(String uuid);
 }
