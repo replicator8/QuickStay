@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
-
+import java.net.URL;
 import java.util.List;
 
 @Entity
@@ -10,13 +10,17 @@ public class Hotel extends BaseEntity {
     private String name;
     private Double rating;
     private Address address;
+    private int roomsCount;
+    private URL photo;
     private List<Room> roomList;
 
     protected Hotel() {}
 
-    public Hotel(String name, Double rating, Address address, List<Room> roomList) {
+    public Hotel(String name, Double rating, Address address, int roomsCount, URL photo, List<Room> roomList) {
         this.name = name;
         this.rating = rating;
+        this.roomsCount = roomsCount;
+        this.photo = photo;
         this.address = address;
         this.roomList = roomList;
     }
@@ -59,5 +63,23 @@ public class Hotel extends BaseEntity {
 
     public void setRoomList(List<Room> roomList) {
         this.roomList = roomList;
+    }
+
+    @Column(name = "photo", nullable = false)
+    public URL getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(URL photo) {
+        this.photo = photo;
+    }
+
+    @Column(name = "rooms_count", nullable = false)
+    public int getRoomsCount() {
+        return roomsCount;
+    }
+
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
     }
 }
