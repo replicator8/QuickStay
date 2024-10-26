@@ -44,6 +44,10 @@ public class Hotel extends BaseEntity {
         return address;
     }
 
+    public String getAllAddress() {
+        return address.getCountry() + ", " + address.getCity() + ", " + address.getStreet() + " " + address.getHouse();
+    }
+
     public void setAddress(Address address) {
         this.address = address;
     }
