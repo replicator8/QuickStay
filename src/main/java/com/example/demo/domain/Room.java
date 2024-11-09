@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-import com.example.demo.constants.RoomStatus;
 import com.example.demo.constants.RoomType;
 import jakarta.persistence.*;
 import java.net.URL;
@@ -10,17 +9,15 @@ import java.net.URL;
 public class Room extends BaseEntity {
     private Hotel hotel;
     private String description;
-    private RoomStatus roomStatus;
     private RoomType roomType;
     private double price;
     private URL photo;
 
     protected Room() {}
 
-    public Room(Hotel hotel, String description, RoomStatus roomStatus, RoomType roomType, double price, URL photo) {
+    public Room(Hotel hotel, String description, RoomType roomType, double price, URL photo) {
         this.hotel = hotel;
         this.description = description;
-        this.roomStatus = roomStatus;
         this.roomType = roomType;
         this.price = price;
         this.photo = photo;
@@ -34,16 +31,6 @@ public class Room extends BaseEntity {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
-    }
-
-    @Column(name = "status", nullable = false, length = 31)
-    @Enumerated(EnumType.STRING)
-    public RoomStatus getRoomStatus() {
-        return roomStatus;
-    }
-
-    public void setRoomStatus(RoomStatus roomStatus) {
-        this.roomStatus = roomStatus;
     }
 
     @Column(name = "type", nullable = false, length = 31)

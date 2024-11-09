@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.domain.Booking;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
@@ -42,4 +43,8 @@ public class BookingServiceImpl implements BookingService {
         this.bookingRepository = bookingRepository;
     }
 
+    @Override
+    public Booking findById(String uuid) {
+        return bookingRepository.findById(uuid).get();
+    }
 }
