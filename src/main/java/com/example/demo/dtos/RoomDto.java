@@ -1,22 +1,19 @@
 package com.example.demo.dtos;
 
 import com.example.demo.domain.Hotel;
-import com.example.demo.constants.RoomStatus;
 import com.example.demo.constants.RoomType;
 import java.net.URL;
 
 public class RoomDto {
     private String id;
     private Hotel hotel;
-    private RoomStatus roomStatus;
     private RoomType roomType;
     private double price;
     private URL photo;
 
-    public RoomDto(String id, Hotel hotel, RoomStatus roomStatus, RoomType roomType, double price, URL photo) {
+    public RoomDto(String id, Hotel hotel, RoomType roomType, double price, URL photo) {
         this.id = id;
         this.hotel = hotel;
-        this.roomStatus = roomStatus;
         this.roomType = roomType;
         this.price = price;
         this.photo = photo;
@@ -28,14 +25,6 @@ public class RoomDto {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
-    }
-
-    public RoomStatus getRoomStatus() {
-        return roomStatus;
-    }
-
-    public void setRoomStatus(RoomStatus roomStatus) {
-        this.roomStatus = roomStatus;
     }
 
     public String getId() {

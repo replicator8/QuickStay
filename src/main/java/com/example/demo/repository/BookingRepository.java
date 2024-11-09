@@ -31,4 +31,6 @@ public interface BookingRepository extends JpaRepository<Booking, String> {
     boolean checkAvailability(@Param("roomId") String roomId, @Param("checkDate") LocalDate date);
     @Query("select b from bookings b where b.user.id = :userId")
     List<Booking> getUserBookings(@Param(value = "userId") String userId);
+    @Query("select b from bookings")
+    List<Booking> getAllBookings();
 }

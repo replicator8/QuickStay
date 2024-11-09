@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.constants.RoomStatus;
 import com.example.demo.constants.RoomType;
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
@@ -16,8 +15,6 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room, String> {
     @Query("select r.hotel from rooms r where r.id = :uuid")
     Hotel getHotelByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select r.status from rooms r where r.id = :uuid")
-    RoomStatus getStatusByRoomId(@Param(value = "uuid") String uuid);
     @Query("select r.description from rooms r where r.id = :uuid")
     String getDescriptionByRoomId(@Param(value = "uuid") String uuid);
     @Query("select r.type from rooms r where r.id = :uuid")
