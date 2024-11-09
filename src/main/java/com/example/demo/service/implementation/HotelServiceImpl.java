@@ -1,9 +1,9 @@
-package com.example.demo.services.implementation;
+package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
-import com.example.demo.repositories.implementation.HotelRepositoryDaoImpl;
-import com.example.demo.services.HotelService;
+import com.example.demo.repository.implementation.HotelRepositoryDaoImpl;
+import com.example.demo.service.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

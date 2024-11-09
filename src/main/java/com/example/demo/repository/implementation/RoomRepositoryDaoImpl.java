@@ -1,8 +1,8 @@
-package com.example.demo.repositories.implementation;
+package com.example.demo.repository.implementation;
 
 import com.example.demo.domain.Room;
-import com.example.demo.repositories.GenericRepository;
-import com.example.demo.repositories.RoomRepository;
+import com.example.demo.repository.GenericRepository;
+import com.example.demo.repository.RoomRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

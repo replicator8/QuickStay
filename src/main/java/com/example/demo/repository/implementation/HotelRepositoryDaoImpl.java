@@ -1,9 +1,9 @@
-package com.example.demo.repositories.implementation;
+package com.example.demo.repository.implementation;
 
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
-import com.example.demo.repositories.GenericRepository;
-import com.example.demo.repositories.HotelRepository;
+import com.example.demo.repository.GenericRepository;
+import com.example.demo.repository.HotelRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 import java.util.List;

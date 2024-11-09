@@ -1,6 +1,6 @@
-package com.example.demo.services.implementation;
+package com.example.demo.service.implementation;
 
-import com.example.demo.services.RoomService;
+import com.example.demo.service.RoomService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,5 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
 public interface BookingService {
+
 }

@@ -1,8 +1,8 @@
-package com.example.demo.repositories.implementation;
+package com.example.demo.repository.implementation;
 
 import com.example.demo.domain.Booking;
-import com.example.demo.repositories.BookingRepository;
-import com.example.demo.repositories.GenericRepository;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.GenericRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
