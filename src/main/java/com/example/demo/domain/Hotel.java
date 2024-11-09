@@ -12,18 +12,16 @@ public class Hotel extends BaseEntity {
     private Address address;
     private int roomsCount;
     private URL photo;
-    private List<Room> roomList;
     private int ratingCount;
 
     protected Hotel() {}
 
-    public Hotel(String name, Double rating, Address address, int roomsCount, URL photo, List<Room> roomList) {
+    public Hotel(String name, Double rating, Address address, int roomsCount, URL photo) {
         this.name = name;
         this.rating = rating;
         this.roomsCount = roomsCount;
         this.photo = photo;
         this.address = address;
-        this.roomList = roomList;
     }
 
     @Column(name = "name", nullable = false, unique = true, length = 127)
@@ -58,15 +56,6 @@ public class Hotel extends BaseEntity {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-   @OneToMany(mappedBy = "hotel")
-    public List<Room> getRoomList() {
-        return roomList;
-    }
-
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
     }
 
     @Column(name = "photo", nullable = false)

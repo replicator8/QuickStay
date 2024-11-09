@@ -13,16 +13,14 @@ public class User extends BaseEntity {
     private String lastName;
     private int age;
     private double balance;
-    private List<Booking> bookingList;
 
     protected User() {}
 
-    public User(String firstName, String lastName, int age, double balance, List<Booking> bookingList) {
+    public User(String firstName, String lastName, int age, double balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.balance = balance;
-        this.bookingList = bookingList;
     }
 
     @Column(name = "firstName", nullable = false, length = 127)
@@ -59,14 +57,5 @@ public class User extends BaseEntity {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    @OneToMany(mappedBy = "user")
-    public List<Booking> getBookingList() {
-        return bookingList;
-    }
-
-    public void setBookingList(List<Booking> bookingList) {
-        this.bookingList = bookingList;
     }
 }

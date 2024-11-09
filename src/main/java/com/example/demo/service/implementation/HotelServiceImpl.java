@@ -1,46 +1,27 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.domain.Hotel;
-import com.example.demo.domain.Room;
-import com.example.demo.repository.implementation.HotelRepositoryDaoImpl;
+import com.example.demo.repository.HotelRepository;
 import com.example.demo.service.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class HotelServiceImpl implements HotelService {
 
-    @Autowired
-    private HotelRepositoryDaoImpl hotelRepository;
+    private HotelRepository hotelRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    @Override
-    public Hotel findById(String uuid) {
-        return hotelRepository.findById(uuid);
+    public HotelServiceImpl(HotelRepository hotelRepository) {
+        this.hotelRepository = hotelRepository;
     }
 
-    @Override
-    public double getRating(String uuid) {
-        return hotelRepository.getRating(uuid);
+    @Autowired
+    public void setHotelRepository(HotelRepository hotelRepository) {
+        this.hotelRepository = hotelRepository;
     }
 
-    @Override
-    public void addRating(String uuid, double userRating) {
-        Hotel hotel = hotelRepository.findById(uuid);
-        if (userRating >= 1 && userRating <= 5)
-            hotel.setRating(userRating);
-    }
-
-    @Override
-    public Room findRoomById(String uuid) {
-        return null;
-    }
-
-    @Override
-    public List<Room> getAllFreeRooms(LocalDate start, LocalDate end) {
-        return List.of();
-    }
 }
