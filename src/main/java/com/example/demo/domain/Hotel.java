@@ -2,7 +2,6 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import java.net.URL;
-import java.util.List;
 
 @Entity
 @Table(name = "hotels")

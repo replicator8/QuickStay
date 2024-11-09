@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    @Query("select u.balance from users u where u.id = :uuid")
+    @Query("select u.balance from User u where u.id = :uuid")
     double getBalanceByUserId(@Param(value = "uuid") String uuid);
-    @Query("select u.firstName, u.lastName from users u where u.id = :uuid")
-    String getFirstNameAndLastNameByUserId(@Param(value = "uuid") String uuid);
-    @Query("select u.age from users u where u.id = :uuid")
+    @Query("select u.firstName from User u where u.id = :uuid")
+    String getFirstNameByUserId(@Param(value = "uuid") String uuid);
+    @Query("select u.lastName from User u where u.id = :uuid")
+    String getLastNameByUserId(@Param(value = "uuid") String uuid);
+    @Query("select u.age from User u where u.id = :uuid")
     int getAgeByUserId(@Param(value = "uuid") String uuid);
 }
