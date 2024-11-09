@@ -47,4 +47,11 @@ public class RoomServiceImpl implements RoomService {
     public Room findById(String uuid) {
         return roomRepository.findById(uuid).get();
     }
+
+    @Override
+    public void setDiscount(String uuid, int percentageNumber) {
+        Room room = findById(uuid);
+        room.setPrice(room.getPrice() * (1 - (percentageNumber / 100.0)));
+        roomRepository.save(room);
+    }
 }
