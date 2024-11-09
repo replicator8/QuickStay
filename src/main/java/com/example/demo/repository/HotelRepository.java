@@ -17,9 +17,9 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     @Query("select h.rating from hotel h where h.id = :uuid")
     double getRatingByHotelId(@Param(value = "uuid") String uuid);
     @Query("select h.rooms_count from hotel h where h.id = :uuid")
-    int getRoomsCountByHotelId(String uuid);
+    int getRoomsCountByHotelId(@Param(value = "uuid") String uuid);
     @Query("select h.photo from hotel h where h.id = :uuid")
-    URL getPhotoByHotelId(String uuid);
+    URL getPhotoByHotelId(@Param(value = "uuid") String uuid);
     @Query(value = "select r from room r where r.hotel.id=:uuid")
     List<Room> getAllRooms(@Param(value = "uuid") String uuid);
 }
