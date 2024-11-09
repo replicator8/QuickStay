@@ -22,4 +22,6 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     URL getPhotoByHotelId(@Param(value = "uuid") String uuid);
     @Query(value = "select r from rooms r where r.hotel.id=:uuid")
     List<Room> getAllRooms(@Param(value = "uuid") String uuid);
+    @Query("UPDATE hotels h SET h.rating = newRating WHERE h.id = :hotelId")
+    void addUserRating(@Param(value = "newRating") double newRating, @Param(value = "hotelId") String hotelId);
 }

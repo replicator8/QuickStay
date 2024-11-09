@@ -76,7 +76,7 @@ public class Hotel extends BaseEntity {
         this.roomsCount = roomsCount;
     }
 
-    @Transient
+    @Column(name = "rating_count")
     public int getRatingCount() {
         return ratingCount;
     }
