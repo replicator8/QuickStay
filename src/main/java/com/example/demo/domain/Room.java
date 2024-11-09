@@ -1,7 +1,7 @@
 package com.example.demo.domain;
 
-import com.example.demo.domain.enums.RoomStatus;
-import com.example.demo.domain.enums.RoomType;
+import com.example.demo.constants.RoomStatus;
+import com.example.demo.constants.RoomType;
 import jakarta.persistence.*;
 import java.net.URL;
 

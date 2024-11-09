@@ -1,4 +1,4 @@
-package com.example.demo.domain.enums;
+package com.example.demo.constants;
 
 public enum RoomStatus {
     FREE, OCCUPIED

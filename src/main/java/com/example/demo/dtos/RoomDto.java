@@ -1,8 +1,8 @@
 package com.example.demo.dtos;
 
 import com.example.demo.domain.Hotel;
-import com.example.demo.domain.enums.RoomStatus;
-import com.example.demo.domain.enums.RoomType;
+import com.example.demo.constants.RoomStatus;
+import com.example.demo.constants.RoomType;
 import java.net.URL;
 
 public class RoomDto {
