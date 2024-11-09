@@ -2,28 +2,43 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
+import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
+import com.example.demo.repository.RoomRepository;
 import com.example.demo.service.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class HotelServiceImpl implements HotelService {
-
     private HotelRepository hotelRepository;
+    private RoomRepository roomRepository;
+    private BookingRepository bookingRepository;
+
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public HotelServiceImpl(HotelRepository hotelRepository) {
+    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository, BookingRepository bookingRepository) {
         this.hotelRepository = hotelRepository;
+        this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     @Autowired
     public void setHotelRepository(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
+    }
+
+    @Autowired
+    public void setRoomRepository(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
+    @Autowired
+    public void setBookingRepository(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
     }
 
     @Override
@@ -32,8 +47,20 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public List<Room> getAllFreeRooms(LocalDate start, LocalDate end) {
-        return List.of();
+    public List<Room> getAllRooms(String hotelId) {
+        return roomRepository.getRoomsByHotelId(hotelId);
+    }
+
+    @Override
+    public List<Room> getAllFreeRooms(String hotelId, LocalDate date) {
+        List<Room> hotelRooms = getAllRooms(hotelId);
+
+        for(Room room: hotelRooms) {
+            if (!bookingRepository.checkAvailability(room.getId(), date)) {
+                hotelRooms.remove(room);
+            }
+        }
+        return hotelRooms;
     }
 
     @Override
@@ -42,7 +69,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void addRating(String uuid, double userRating) {
+    public void updateRating(String uuid, double userRating) {
        if (userRating >= 0 && userRating <= 5) {
            Hotel hotel = hotelRepository.findById(uuid).get();
            double newRating = ((hotel.getRating() * hotel.getRatingCount()) + userRating) / (hotel.getRatingCount() + 1);

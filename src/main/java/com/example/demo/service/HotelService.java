@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface HotelService {
     Hotel findById(String uuid);
-    List<Room> getAllFreeRooms(LocalDate start, LocalDate end);
+    List<Room> getAllRooms(String hotelId);
+    List<Room> getAllFreeRooms(String hotelId, LocalDate date);
     double getRating(String uuid);
-    void addRating(String uuid, double userRating);
+    void updateRating(String uuid, double userRating);
 }

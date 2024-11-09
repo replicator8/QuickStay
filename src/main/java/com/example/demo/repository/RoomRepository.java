@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.net.URL;
+import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
@@ -25,4 +26,6 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     double getPriceByRoomId(@Param(value = "uuid") String uuid);
     @Query("select r.photo from rooms r where r.id = :uuid")
     URL getPhotoByRoomId(@Param(value = "uuid") String uuid);
+    @Query("select * from rooms r where r.hotel.id = :hotelId")
+    List<Room> getRoomsByHotelId(@Param(value = "hotelId") String hotelId);
 }

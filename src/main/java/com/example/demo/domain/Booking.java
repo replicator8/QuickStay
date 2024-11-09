@@ -9,15 +9,17 @@ public class Booking extends BaseEntity {
     private Room room;
     private User user;
     private LocalDate dateStart;
+    private LocalDate dateEnd;
     private double price;
     private int duration;
 
     protected Booking() {}
 
-    public Booking(Room room, User user, LocalDate dateStart, double price, int duration) {
+    public Booking(Room room, User user, LocalDate dateStart, LocalDate dateEnd, double price, int duration) {
         this.room = room;
         this.user = user;
         this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
         this.price = price;
         this.duration = duration;
     }
@@ -49,6 +51,15 @@ public class Booking extends BaseEntity {
 
     public void setDate(LocalDate date) {
         this.dateStart = date;
+    }
+
+    @Column(name = "date_end", nullable = false)
+    public LocalDate getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(LocalDate dateEnd) {
+        this.dateEnd = dateEnd;
     }
 
     @Column(name = "price", nullable = false)
