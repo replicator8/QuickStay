@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     public boolean deleteBooking(String userId, String roomId, LocalDate startDate, LocalDate endDate) {
         List<Booking> bookings = getUserBookings(userId);
         for (Booking booking: bookings) {
-            if (Objects.equals(booking.getRoom().getId(), roomId) && booking.getDate() == startDate && booking.getDateEnd() == endDate) {
+            if (Objects.equals(booking.getRoom().getId(), roomId) && booking.getDateStart() == startDate && booking.getDateEnd() == endDate) {
                 bookingRepository.delete(booking);
                 return true;
             }

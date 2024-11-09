@@ -45,11 +45,11 @@ public class Booking extends BaseEntity {
     }
 
     @Column(name = "date_start", nullable = false)
-    public LocalDate getDate() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDateStart(LocalDate date) {
         this.dateStart = date;
     }
 
