@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.Booking;
-import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
