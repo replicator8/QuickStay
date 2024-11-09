@@ -6,6 +6,7 @@
 
 ## **Technologies**
 - Spring Boot
+- Spring MVC
 - Spring Data JPA
 - PostgreSQL
 - Jakarta Persistence API
