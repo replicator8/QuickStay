@@ -14,23 +14,23 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, String> {
-    @Query("select b.room from bookings b where b.id = :uuid")
+    @Query("select b.room from Booking b where b.id = :uuid")
     Room getRoomByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select b.user from bookings b where b.id = :uuid")
+    @Query("select b.user from Booking b where b.id = :uuid")
     User getUserByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select b.date_start from bookings b where b.id = :uuid")
+    @Query("select b.dateStart from Booking b where b.id = :uuid")
     LocalDate getStartDateByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select b.date_end from bookings b where b.id = :uuid")
+    @Query("select b.dateEnd from Booking b where b.id = :uuid")
     LocalDate getEndDateByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select b.price from bookings b where b.id = :uuid")
+    @Query("select b.price from Booking b where b.id = :uuid")
     double getPriceByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select b.duration from bookings b where b.id = :uuid")
+    @Query("select b.duration from Booking b where b.id = :uuid")
     int getDurationByBookingId(@Param(value = "uuid") String uuid);
-    @Query("select case when count(b) > 0 THEN false ELSE true END from bookings b " +
+    @Query("select case when count(b) > 0 THEN false ELSE true END from Booking b " +
             "where b.room.id = :roomId and :checkDate BETWEEN b.dateStart AND b.dateEnd")
     boolean checkAvailability(@Param("roomId") String roomId, @Param("checkDate") LocalDate date);
-    @Query("select b from bookings b where b.user.id = :userId")
+    @Query("select b from Booking b where b.user.id = :userId")
     List<Booking> getUserBookings(@Param(value = "userId") String userId);
-    @Query("select b from bookings")
+    @Query("select b from Booking")
     List<Booking> getAllBookings();
 }

@@ -13,16 +13,16 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
-    @Query("select r.hotel from rooms r where r.id = :uuid")
+    @Query("select r.hotel from Room r where r.id = :uuid")
     Hotel getHotelByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select r.description from rooms r where r.id = :uuid")
+    @Query("select r.description from Room r where r.id = :uuid")
     String getDescriptionByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select r.type from rooms r where r.id = :uuid")
+    @Query("select r.roomType from Room r where r.id = :uuid")
     RoomType getTypeByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select r.price from rooms r where r.id = :uuid")
+    @Query("select r.price from Room r where r.id = :uuid")
     double getPriceByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select r.photo from rooms r where r.id = :uuid")
+    @Query("select r.photo from Room r where r.id = :uuid")
     URL getPhotoByRoomId(@Param(value = "uuid") String uuid);
-    @Query("select * from rooms r where r.hotel.id = :hotelId")
+    @Query("select r from Room r where r.hotel.id = :hotelId")
     List<Room> getRoomsByHotelId(@Param(value = "hotelId") String hotelId);
 }
