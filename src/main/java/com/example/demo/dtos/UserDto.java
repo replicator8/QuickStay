@@ -1,23 +1,18 @@
 package com.example.demo.dtos;
 
-import com.example.demo.domain.Booking;
-import java.util.List;
-
 public class UserDto {
     private String id;
     private String firstName;
     private String lastName;
     private int age;
     private double balance;
-    private List<Booking> bookingList;
 
-    public UserDto(String id, String firstName, String lastName, int age, double balance, List<Booking> bookingList) {
+    public UserDto(String id, String firstName, String lastName, int age, double balance) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.balance = balance;
-        this.bookingList = bookingList;
     }
 
     public String getId() {
@@ -58,13 +53,5 @@ public class UserDto {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public List<Booking> getBookingList() {
-        return bookingList;
-    }
-
-    public void setBookingList(List<Booking> bookingList) {
-        this.bookingList = bookingList;
     }
 }

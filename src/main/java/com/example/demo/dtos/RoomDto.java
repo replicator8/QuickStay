@@ -7,13 +7,15 @@ import java.net.URL;
 public class RoomDto {
     private String id;
     private Hotel hotel;
+    private String description;
     private RoomType roomType;
     private double price;
     private URL photo;
 
-    public RoomDto(String id, Hotel hotel, RoomType roomType, double price, URL photo) {
+    public RoomDto(String id, Hotel hotel, String description, RoomType roomType, double price, URL photo) {
         this.id = id;
         this.hotel = hotel;
+        this.description = description;
         this.roomType = roomType;
         this.price = price;
         this.photo = photo;
@@ -57,5 +59,13 @@ public class RoomDto {
 
     public void setPhoto(URL photo) {
         this.photo = photo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

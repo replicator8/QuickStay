@@ -1,22 +1,23 @@
 package com.example.demo.dtos;
 
 import com.example.demo.domain.Address;
-import com.example.demo.domain.Room;
-import java.util.List;
+import java.net.URL;
 
 public class HotelDto {
     private String id;
     private String name;
-    private Double rating;
+    private double rating;
     private Address address;
-    private List<Room> roomList;
+    private int roomsCount;
+    private URL photo;
 
-    public HotelDto(String id, String name, Double rating, Address address, List<Room> roomList) {
+    public HotelDto(String id, String name, double rating, Address address, int roomsCount, URL photo) {
         this.id = id;
         this.name = name;
         this.rating = rating;
         this.address = address;
-        this.roomList = roomList;
+        this.roomsCount = roomsCount;
+        this.photo = photo;
     }
 
     public String getId() {
@@ -35,11 +36,11 @@ public class HotelDto {
         this.name = name;
     }
 
-    public Double getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -51,11 +52,19 @@ public class HotelDto {
         this.address = address;
     }
 
-    public List<Room> getRoomList() {
-        return roomList;
+    public int getRoomsCount() {
+        return roomsCount;
     }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
+    }
+
+    public URL getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(URL photo) {
+        this.photo = photo;
     }
 }

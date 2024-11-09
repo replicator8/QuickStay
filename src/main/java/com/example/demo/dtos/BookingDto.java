@@ -8,16 +8,18 @@ public class BookingDto {
     private String id;
     private Hotel hotel;
     private User user;
-    private LocalDate date;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
     private double price;
     private int duration;
 
-    public BookingDto(String id, Hotel hotel, User user, double price, LocalDate date, int duration) {
+    public BookingDto(String id, Hotel hotel, User user, double price, LocalDate dateStart, LocalDate dateEnd, int duration) {
         this.id = id;
         this.hotel = hotel;
         this.user = user;
         this.price = price;
-        this.date = date;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
         this.duration = duration;
     }
 
@@ -53,12 +55,20 @@ public class BookingDto {
         this.price = price;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDateStart() {
+        return dateStart;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateStart(LocalDate dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public LocalDate getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(LocalDate dateEnd) {
+        this.dateEnd = dateEnd;
     }
 
     public int getDuration() {
