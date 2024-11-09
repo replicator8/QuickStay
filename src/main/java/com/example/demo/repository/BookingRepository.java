@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, String> {
@@ -28,4 +29,6 @@ public interface BookingRepository extends JpaRepository<Booking, String> {
     @Query("select case when count(b) > 0 THEN false ELSE true END from bookings b " +
             "where b.room.id = :roomId and :checkDate BETWEEN b.dateStart AND b.dateEnd")
     boolean checkAvailability(@Param("roomId") String roomId, @Param("checkDate") LocalDate date);
+    @Query("select b from bookings b where b.user.id = :userId")
+    List<Booking> getUserBookings(@Param(value = "userId") String userId);
 }

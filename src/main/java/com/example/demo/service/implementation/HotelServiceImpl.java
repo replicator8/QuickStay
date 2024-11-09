@@ -5,6 +5,7 @@ import com.example.demo.domain.Room;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,18 @@ import java.util.List;
 
 @Service
 public class HotelServiceImpl implements HotelService {
+    private UserRepository userRepository;
     private HotelRepository hotelRepository;
     private RoomRepository roomRepository;
     private BookingRepository bookingRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository, BookingRepository bookingRepository) {
+    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository, BookingRepository bookingRepository, UserRepository userRepository) {
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -39,6 +42,11 @@ public class HotelServiceImpl implements HotelService {
     @Autowired
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
