@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
 
-    public BookingRepository getBookingRepository() {
-        return bookingRepository;
+    public BookingServiceImpl(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
     }
 
     @Autowired
