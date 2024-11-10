@@ -90,4 +90,9 @@ public class HotelServiceImpl implements HotelService {
            hotel.setRatingCount(hotel.getRatingCount() + 1);
        }
     }
+
+    @Override
+    public List<Hotel> findAll() {
+        return hotelRepository.findAll();
+    }
 }

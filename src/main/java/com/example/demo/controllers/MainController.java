@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class MainController {
     private HotelService hotelService;
@@ -16,8 +18,8 @@ public class MainController {
         this.hotelService = hotelService;
     }
 
-    @GetMapping("/hotels/{id}")
-    Hotel getHotel(@PathVariable String id) {
-        return hotelService.findById(id);
+    @GetMapping("/hotels")
+    List<Hotel> getHotels() {
+        return hotelService.findAll();
     }
 }
