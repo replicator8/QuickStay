@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.domain.Hotel;
+import com.example.demo.domain.Room;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,5 +27,10 @@ public class HotelController {
     @GetMapping("/hotels/{id}/rating")
     Double getHotelRating(@PathVariable String id) {
         return hotelService.findById(id).getRating();
+    }
+
+    @GetMapping("/hotels/{id}/rooms")
+    List<Room> getHotelRooms(@PathVariable String id) {
+        return hotelService.getAllRooms(id);
     }
 }
