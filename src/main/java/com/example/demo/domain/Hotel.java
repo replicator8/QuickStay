@@ -21,6 +21,7 @@ public class Hotel extends BaseEntity {
         this.roomsCount = roomsCount;
         this.photo = photo;
         this.address = address;
+        this.ratingCount = 1;
     }
 
     @Column(name = "name", nullable = false, length = 127)
@@ -45,10 +46,6 @@ public class Hotel extends BaseEntity {
     public Address getAddress() {
         return address;
     }
-
-//    public String getFullAddress() {
-//        return address.getCountry() + ", " + address.getCity() + ", " + address.getStreet() + " " + address.getHouse();
-//    }
 
     public void setAddress(Address address) {
         this.address = address;
@@ -79,5 +76,17 @@ public class Hotel extends BaseEntity {
 
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "name='" + name + '\'' +
+                ", rating=" + rating +
+                ", address=" + address +
+                ", roomsCount=" + roomsCount +
+                ", photo=" + photo +
+                ", ratingCount=" + ratingCount +
+                '}';
     }
 }

@@ -2,12 +2,17 @@ package com.example.demo;
 
 import com.example.demo.domain.Address;
 import com.example.demo.domain.Hotel;
-import com.example.demo.repository.AddressRepository;
-import com.example.demo.repository.HotelRepository;
+import com.example.demo.domain.User;
+import com.example.demo.repository.*;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 @Component
 public class MyCommandLineRunner implements CommandLineRunner {
@@ -15,25 +20,31 @@ public class MyCommandLineRunner implements CommandLineRunner {
     private HotelRepository hotelRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    BookingRepository bookingRepository;
 
-    public MyCommandLineRunner(HotelRepository hotelRepository, AddressRepository addressRepository) {
+    Faker fakerRus = new Faker(new Locale("ru"));
+    Faker fakerUSA = new Faker(new Locale("en-US"));
+    Random rand = new Random();
+
+    public MyCommandLineRunner(HotelRepository hotelRepository, AddressRepository addressRepository, UserRepository userRepository, RoomRepository roomRepository, BookingRepository bookingRepository) {
         this.hotelRepository = hotelRepository;
         this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
+        this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-//        Address address1 = new Address("Russia", "Moscow", "Okhotny Ryad St.", "2");
-//        addressRepository.save(address1);
-//
-//        Hotel hotel1 = new Hotel(
-//                "Four Seasons Hotel",
-//                3.0,
-//                address1,
-//                300,
-//                new URL("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/5d/59/86/exterior--v17631841.jpg?w=1200&amp;h=-1&amp;s=1"));
-//        hotelRepository.save(hotel1);
+        for (int i = 0; i < 50; i++) {
+
+        }
 
     }
 }

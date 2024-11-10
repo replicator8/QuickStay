@@ -56,4 +56,14 @@ public class User extends BaseEntity {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", balance=" + balance +
+                '}';
+    }
 }
