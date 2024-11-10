@@ -69,4 +69,15 @@ public class Room extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "hotel=" + hotel +
+                ", description='" + description + '\'' +
+                ", roomType=" + roomType +
+                ", price=" + price +
+                ", photo=" + photo +
+                '}';
+    }
 }

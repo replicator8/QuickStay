@@ -1,10 +1,16 @@
 package com.example.demo;
 
+import com.example.demo.constants.RoomType;
+import com.example.demo.domain.Hotel;
+import com.example.demo.domain.Room;
 import com.example.demo.repository.*;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -35,10 +41,6 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        for (int i = 0; i < 50; i++) {
-
-        }
 
     }
 }
