@@ -3,6 +3,7 @@ package com.example.demo.service.implementation;
 import com.example.demo.domain.Booking;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.dtos.BookingDtoInput;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
@@ -65,19 +66,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createBooking(String userId, String roomId, LocalDate startDate, LocalDate endDate) {
-        int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+    public BookingDtoInput createBooking(BookingDtoInput bookingDto) {
+
+        int totalDays = (int) ChronoUnit.DAYS.between(bookingDto.getDateStart(), bookingDto.getDateEnd());
         for (int i = 0; i < totalDays; i++) {
-            if (!bookingRepository.checkAvailability(roomId, startDate.plusDays(i))) return false;
+            if (!bookingRepository.checkAvailability(bookingDto.getRoomId(), bookingDto.getDateStart().plusDays(i))) return null;
         }
 
-        Room room = roomRepository.findById(roomId).get();
-        User user = userRepository.findById(userId).get();
-        double totalPrice = roomRepository.getPriceByRoomId(roomId) * totalDays;
-        Booking booking = new Booking(room, user, startDate, endDate, totalPrice, totalDays);
+        Room room = roomRepository.findById(bookingDto.getRoomId()).get();
+        User user = userRepository.findById(bookingDto.getUserId()).get();
+        double totalPrice = roomRepository.getPriceByRoomId(bookingDto.getRoomId()) * totalDays;
+        Booking booking = new Booking(room, user, bookingDto.getDateStart(), bookingDto.getDateEnd(), totalPrice, totalDays);
 
         bookingRepository.save(booking);
-        return true;
+        return bookingDto;
     }
 
     @Override

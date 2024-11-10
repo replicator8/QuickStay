@@ -1,58 +1,34 @@
 package com.example.demo.dtos;
 
-import com.example.demo.domain.Hotel;
-import com.example.demo.domain.User;
 import java.time.LocalDate;
 
-public class BookingDto {
-    private String id;
-    private Hotel hotel;
-    private User user;
+public class BookingDtoInput {
+    private String roomId;
+    private String userId;
     private LocalDate dateStart;
     private LocalDate dateEnd;
-    private double price;
-    private int duration;
 
-    public BookingDto(String id, Hotel hotel, User user, double price, LocalDate dateStart, LocalDate dateEnd, int duration) {
-        this.id = id;
-        this.hotel = hotel;
-        this.user = user;
-        this.price = price;
+    public BookingDtoInput(String roomId, String userId, LocalDate dateStart, LocalDate dateEnd) {
+        this.roomId = roomId;
+        this.userId = userId;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.duration = duration;
     }
 
-    public String getId() {
-        return id;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoomId(String hotelId) {
+        this.roomId = hotelId;
     }
 
-    public Hotel getHotel() {
-        return hotel;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public LocalDate getDateStart() {
@@ -69,13 +45,5 @@ public class BookingDto {
 
     public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 }
