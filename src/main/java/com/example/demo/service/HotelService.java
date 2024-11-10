@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelService {
+    Hotel findByName(String name);
     Hotel findById(String uuid);
     List<Room> getAllRooms(String hotelId);
     List<Room> getAllFreeRooms(String hotelId, LocalDate date);

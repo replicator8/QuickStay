@@ -23,7 +23,7 @@ public class Hotel extends BaseEntity {
         this.address = address;
     }
 
-    @Column(name = "name", nullable = false, unique = true, length = 127)
+    @Column(name = "name", nullable = false, length = 127)
     public String getName() {
         return name;
     }
@@ -43,15 +43,14 @@ public class Hotel extends BaseEntity {
         this.rating /= ratingCount;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public Address getAddress() {
         return address;
     }
 
-    @Transient
-    public String getFullAddress() {
-        return address.getCountry() + ", " + address.getCity() + ", " + address.getStreet() + " " + address.getHouse();
-    }
+//    public String getFullAddress() {
+//        return address.getCountry() + ", " + address.getCity() + ", " + address.getStreet() + " " + address.getHouse();
+//    }
 
     public void setAddress(Address address) {
         this.address = address;
