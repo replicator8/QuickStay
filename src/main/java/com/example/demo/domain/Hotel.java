@@ -38,12 +38,10 @@ public class Hotel extends BaseEntity {
     }
 
     public void setRating(Double rating) {
-        ratingCount++;
-        this.rating += rating;
-        this.rating /= ratingCount;
+        this.rating = rating;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     public Address getAddress() {
         return address;
     }

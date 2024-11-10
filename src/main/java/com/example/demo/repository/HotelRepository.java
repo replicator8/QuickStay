@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, String> {
-    List<Hotel> findByName(String name);
+    Hotel findByName(String name);
     @Query("select h.rating from Hotel h where h.id = :uuid")
     double getRatingByHotelId(@Param(value = "uuid") String uuid);
     @Query("select h.roomsCount from Hotel h where h.id = :uuid")

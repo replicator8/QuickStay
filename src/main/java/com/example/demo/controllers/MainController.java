@@ -16,6 +16,6 @@ public class MainController {
 
     @GetMapping("/hotel1")
     String getHotel() {
-        return hotelService.findByName("Four Seasons Hotel Moscow").getName();
+        return hotelService.findByName("Four Seasons Hotel").getId();
     }
 }
