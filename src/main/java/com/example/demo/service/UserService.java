@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserService {
     User findById(String uuid);
+    List<User> findAll();
     double getBalanceById(String uuid);
     boolean createBooking(String userId, String roomId, LocalDate startDate, LocalDate endDate);
     boolean deleteBooking(String userId, String roomId, LocalDate startDate, LocalDate endDate);
