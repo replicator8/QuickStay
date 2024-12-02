@@ -36,8 +36,9 @@ public class BookingControllerImpl implements BookingController {
 
     @Override
     @PostMapping("/getHotelsWithFilter")
-    public String getHotelsWithFilter(@RequestBody BookingViewModelFilter bookingViewModelFilter) {
-        // TODO: ~
+    public String getHotelsWithFilter(@RequestBody BookingViewModelFilter filter) {
+        // TODO: add to page
+        List<HotelViewModel> hotels = bookingService.getHotelsWithFilter(filter);
 
         return "Booking";
     }

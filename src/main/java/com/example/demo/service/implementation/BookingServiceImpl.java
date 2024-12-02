@@ -8,6 +8,7 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.viewmodel.BookingViewModel;
+import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,23 @@ public class BookingServiceImpl implements BookingService {
         List<HotelViewModel> models = new ArrayList<>(hotels.size());
 
         for (Hotel hotel: hotels) {
-            models.add(new HotelViewModel(hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+            models.add(new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        }
+
+        return models;
+    }
+
+    @Override
+    public List<HotelViewModel> getHotelsWithFilter(BookingViewModelFilter model) {
+        String country = model.country();
+        String city = model.city();
+        double rating = model.rating();
+
+        List<Hotel> hotels = hotelRepository.getHotelByCountryAndCityFilter(country, city, rating);
+        List<HotelViewModel> models = new ArrayList<>(hotels.size());
+
+        for (Hotel hotel: hotels) {
+            models.add(new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
         }
 
         return models;

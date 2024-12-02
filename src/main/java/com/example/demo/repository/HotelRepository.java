@@ -26,4 +26,6 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     void addUserRating(@Param(value = "newRating") double newRating, @Param(value = "hotelId") String hotelId);
     @Query("select h from Hotel h where h.address.country = :country and h.address.city = :city")
     List<Hotel> getHotelByCountryAndCity(@Param(value = "country") String country, @Param(value = "city") String city);
+    @Query("select h from Hotel h where h.address.country = :country and h.address.city = :city and h.rating >= :rating and h.rating < :rating + 1")
+    List<Hotel> getHotelByCountryAndCityFilter(@Param(value = "country") String country, @Param(value = "city") String city, @Param(value = "rating") double rating);
 }
