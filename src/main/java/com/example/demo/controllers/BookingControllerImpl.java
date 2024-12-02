@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.service.BookingService;
-import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.BookingController;
 import com.example.quickstay_contracts.viewmodel.BookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
@@ -12,13 +11,7 @@ import java.util.List;
 
 @RestController
 public class BookingControllerImpl implements BookingController {
-    private UserService userService;
     private BookingService bookingService;
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
