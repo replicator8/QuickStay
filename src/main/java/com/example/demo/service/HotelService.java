@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
+import com.example.quickstay_contracts.viewmodel.HotelViewModel;
+
 import java.time.LocalDate;
 import java.util.List;
 

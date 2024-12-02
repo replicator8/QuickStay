@@ -1,13 +1,18 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Booking;
+import com.example.demo.domain.Hotel;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
+import com.example.quickstay_contracts.viewmodel.BookingViewModel;
+import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,5 +57,26 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllBookings() {
         return bookingRepository.getAllBookings();
+    }
+
+    @Override
+    public boolean deleteBooking(String bookingUUID) {
+        bookingRepository.delete(bookingRepository.findById(bookingUUID).get());
+        return true;
+    }
+
+    @Override
+    public List<HotelViewModel> getHotels(BookingViewModel model) {
+        String country = model.country();
+        String city = model.city();
+
+        List<Hotel> hotels = hotelRepository.getHotelByCountryAndCity(country, city);
+        List<HotelViewModel> models = new ArrayList<>(hotels.size());
+
+        for (Hotel hotel: hotels) {
+            models.add(new HotelViewModel(hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        }
+
+        return models;
     }
 }

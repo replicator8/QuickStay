@@ -9,14 +9,18 @@ import jakarta.persistence.Table;
 public class User extends BaseEntity {
     private String firstName;
     private String lastName;
+    private String userName;
+    private String password;
     private int age;
     private double balance;
 
     protected User() {}
 
-    public User(String firstName, String lastName, int age, double balance) {
+    public User(String firstName, String lastName, String userName, String password, int age, double balance) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
         this.age = age;
         this.balance = balance;
     }
@@ -46,6 +50,24 @@ public class User extends BaseEntity {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Column(name = "user_name", length = 127, nullable = false, unique = true)
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Column(name = "password", length = 63, nullable = false)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Column(name = "balance", nullable = false)

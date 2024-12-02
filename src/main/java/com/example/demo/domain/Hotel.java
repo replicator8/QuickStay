@@ -7,6 +7,7 @@ import java.net.URL;
 @Table(name = "hotels")
 public class Hotel extends BaseEntity {
     private String name;
+    private String description;
     private Double rating;
     private Address address;
     private int roomsCount;
@@ -15,8 +16,9 @@ public class Hotel extends BaseEntity {
 
     protected Hotel() {}
 
-    public Hotel(String name, Double rating, Address address, int roomsCount, URL photo) {
+    public Hotel(String name, Double rating, Address address, int roomsCount, URL photo, String description) {
         this.name = name;
+        this.description = description;
         this.rating = rating;
         this.roomsCount = roomsCount;
         this.photo = photo;
@@ -31,6 +33,15 @@ public class Hotel extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(name = "name", nullable = false, length = 127)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Column(name = "rating", nullable = false)
