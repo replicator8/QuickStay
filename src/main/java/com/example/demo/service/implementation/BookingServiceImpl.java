@@ -61,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean deleteBooking(String bookingUUID) {
-        bookingRepository.delete(bookingRepository.findById(bookingUUID).get());
+        bookingRepository.deleteById(bookingUUID);
         return true;
     }
 

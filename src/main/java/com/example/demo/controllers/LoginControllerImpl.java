@@ -26,7 +26,7 @@ public class LoginControllerImpl implements LoginController {
         User user = userService.findByUserName(userAuthViewModel.userName());
         if (user != null) {
             if (user.getPassword().equals(userAuthViewModel.password())) {
-                // TODO: open page
+                // TODO: open user acc page
             }
         }
     }

@@ -22,6 +22,6 @@ public class RegisterControllerImpl implements RegisterController {
     @PostMapping("/signUp")
     public void signUp(UserRegisterViewModel userRegisterViewModel) {
         userService.createUser(userRegisterViewModel);
-        // TODO: open page
+        // TODO: open user acc page
     }
 }

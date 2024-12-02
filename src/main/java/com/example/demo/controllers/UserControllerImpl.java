@@ -1,11 +1,12 @@
 package com.example.demo.controllers;
 
-import com.example.demo.domain.Booking;
 import com.example.demo.domain.User;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.HotelService;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.UserController;
+import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
+import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -35,8 +36,8 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/getActiveBookings/{userUUID}")
     public String getActiveBookings(@PathVariable String userUUID) {
-        List<Booking> bookings = userService.getActiveBookings(userUUID);
-        // TODO: ~
+        List<UserActiveBookingsViewModel> bookings = userService.getActiveBookings(userUUID);
+        // TODO: display bookings
 
         return "User profile";
     }
@@ -44,8 +45,8 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/getArchiveBookings/{userUUID}")
     public String getArchiveBookings(@PathVariable String userUUID) {
-        List<Booking> bookings = userService.getArchiveBookings(userUUID);
-        // TODO: ~
+        List<UserArchiveBookingsViewModel> bookings = userService.getArchiveBookings(userUUID);
+        // TODO: display bookings
 
         return "User profile";
     }
