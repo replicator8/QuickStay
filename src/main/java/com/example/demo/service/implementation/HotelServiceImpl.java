@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.constants.RoomType;
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
 import com.example.demo.repository.BookingRepository;
@@ -7,11 +8,15 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.HotelService;
-import com.example.quickstay_contracts.viewmodel.HotelViewModel;
+import com.example.quickstay_contracts.viewmodel.RoomBookingModel;
+import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
+import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,6 +80,75 @@ public class HotelServiceImpl implements HotelService {
             }
         }
         return hotelRooms;
+    }
+
+    @Override
+    public List<RoomViewModel> getAllFreeRoomsByDates(RoomBookingModel model) {
+        String hotelId = model.hotelUUID();
+        LocalDate startDate = model.start();
+        LocalDate endDate = model.end();
+        int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+
+        // get all hotel rooms
+        List<Room> allRooms = hotelRepository.getAllRooms(hotelId);
+
+        List<RoomViewModel> rooms = new ArrayList<>();
+
+        // check if room is available
+        for (Room room: allRooms) {
+            String roomUUID = room.getId();
+            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
+                allRooms.remove(room);
+            }
+        }
+
+        // map
+        for (Room room: allRooms) {
+            rooms.add(new RoomViewModel(
+                    room.getId(),
+                    room.getRoomType().getRus(),
+                    room.getDescription(),
+                    room.getPrice() * totalDays,
+                    room.getPhoto()
+            ));
+        }
+
+        return rooms;
+    }
+
+    @Override
+    public List<RoomViewModel> getAllFreeRoomsByDatesFilter(RoomBookingModelFilter filter) {
+        String hotelId = filter.hotelUUID();
+        LocalDate startDate = filter.start();
+        LocalDate endDate = filter.end();
+        RoomType type = filter.type();
+        int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+
+        // get all hotel rooms by type
+        List<Room> allRooms = hotelRepository.getAllRoomsByType(hotelId, type);
+
+        List<RoomViewModel> rooms = new ArrayList<>();
+
+        // check if room is available
+        for (Room room: allRooms) {
+            String roomUUID = room.getId();
+            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
+                allRooms.remove(room);
+            }
+        }
+
+        // map
+        for (Room room: allRooms) {
+            rooms.add(new RoomViewModel(
+                    room.getId(),
+                    room.getRoomType().getRus(),
+                    room.getDescription(),
+                    room.getPrice() * totalDays,
+                    room.getPhoto()
+            ));
+        }
+
+        return rooms;
     }
 
     @Override

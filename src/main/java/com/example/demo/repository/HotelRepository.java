@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.constants.RoomType;
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,8 +20,10 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     int getRoomsCountByHotelId(@Param(value = "uuid") String uuid);
     @Query("select h.photo from Hotel h where h.id = :uuid")
     URL getPhotoByHotelId(@Param(value = "uuid") String uuid);
-    @Query(value = "select r from Room r where r.hotel.id=:uuid")
+    @Query(value = "select r from Room r where r.hotel.id = :uuid")
     List<Room> getAllRooms(@Param(value = "uuid") String uuid);
+    @Query(value = "select r from Room r where r.hotel.id = :uuid and r.roomType = :type")
+    List<Room> getAllRoomsByType(@Param(value = "uuid") String uuid, @Param(value = "type") RoomType type);
     @Modifying
     @Query("UPDATE Hotel h SET h.rating = :newRating WHERE h.id = :hotelId")
     void addUserRating(@Param(value = "newRating") double newRating, @Param(value = "hotelId") String hotelId);

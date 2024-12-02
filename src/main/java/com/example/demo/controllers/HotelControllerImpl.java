@@ -7,10 +7,13 @@ import com.example.quickstay_contracts.controllers.HotelController;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
 import com.example.quickstay_contracts.viewmodel.RoomBookingModel;
 import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
+import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
+@RequestMapping("hotel")
 public class HotelControllerImpl implements HotelController {
     private HotelService hotelService;
     private UserService userService;
@@ -26,14 +29,19 @@ public class HotelControllerImpl implements HotelController {
     }
 
     @Override
+    @PostMapping("/getRooms")
     public String getHotelRooms(RoomBookingModel roomBookingModel) {
-        // TODO: ~
+        // TODO: add to page
+        List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(roomBookingModel);
 
-        return "";
+        return "Hotel";
     }
 
+    @Override
     @PostMapping("/getRoomsWithFilter")
     public String getHotelRoomsWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
+        // TODO: add to page
+        List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDatesFilter(roomBookingModelFilter);
 
         return "Hotel";
     }
