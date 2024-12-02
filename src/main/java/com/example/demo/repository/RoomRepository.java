@@ -24,4 +24,6 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     URL getPhotoByRoomId(@Param(value = "uuid") String uuid);
     @Query("select r from Room r where r.hotel.id = :hotelId")
     List<Room> getRoomsByHotelId(@Param(value = "hotelId") String hotelId);
+    @Query("select r from Room r where r.price * :days <= :userPrice")
+    List<Room> getRoomsByPrice(@Param(value = "days") int days, @Param(value = "userPrice") double userPrice);
 }

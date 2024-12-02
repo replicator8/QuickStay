@@ -8,7 +8,6 @@ import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

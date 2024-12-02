@@ -6,8 +6,15 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.RoomService;
+import com.example.quickstay_contracts.input.CustomBookingInputModel;
+import com.example.quickstay_contracts.viewmodel.RoomViewModelCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -53,5 +60,40 @@ public class RoomServiceImpl implements RoomService {
         Room room = findById(uuid);
         room.setPrice(room.getPrice() * (1 - (percentageNumber / 100.0)));
         roomRepository.save(room);
+    }
+
+    @Override
+    public List<RoomViewModelCustom> getCustomRooms(CustomBookingInputModel model) {
+        // get all rooms which suits by price
+        int totalDays = (int) ChronoUnit.DAYS.between(model.start(), model.end());
+
+        LocalDate startDate = model.start();
+        LocalDate endDate = model.end();
+
+        List<Room> roomsSuitByPrice = roomRepository.getRoomsByPrice(totalDays, model.price());
+
+        // check this rooms to be not booked for dates
+        for (Room room: roomsSuitByPrice) {
+            String roomUUID = room.getId();
+            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
+                roomsSuitByPrice.remove(room);
+            }
+        }
+
+        // map to view model
+        List<RoomViewModelCustom> rooms = new ArrayList<>();
+
+        for (Room room: roomsSuitByPrice) {
+            rooms.add(new RoomViewModelCustom(
+                    room.getId(),
+                    room.getHotel().getName(),
+                    room.getRoomType().getRus(),
+                    room.getHotel().getAddress().getFullAddress(),
+                    room.getPrice() * totalDays,
+                    room.getPhoto()
+                    ));
+        }
+
+        return rooms;
     }
 }
