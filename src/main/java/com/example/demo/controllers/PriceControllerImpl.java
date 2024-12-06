@@ -31,11 +31,11 @@ public class PriceControllerImpl implements PriceController {
 
     @Override
     @PostMapping("/getRooms")
-    public String getRooms(@RequestBody CustomBookingInputModel customBookingInputModel) {
+    public List<RoomViewModelCustom> getRooms(@RequestBody CustomBookingInputModel customBookingInputModel) {
         // TODO: display rooms
         List<RoomViewModelCustom> rooms = roomService.getCustomRooms(customBookingInputModel);
 
-        return "Price Page";
+        return rooms;
     }
 
     @Override
