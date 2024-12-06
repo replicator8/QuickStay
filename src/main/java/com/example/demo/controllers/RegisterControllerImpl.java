@@ -18,6 +18,7 @@ public class RegisterControllerImpl implements RegisterController {
         this.userService = userService;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/signUp")
     public void signUp(UserRegisterViewModel userRegisterViewModel) {
