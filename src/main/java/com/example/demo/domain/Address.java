@@ -62,4 +62,14 @@ public class Address extends BaseEntity {
     public String getFullAddress() {
         return street + ", " + city + ", " + street + ", " + house;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", house='" + house + '\'' +
+                '}';
+    }
 }

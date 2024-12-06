@@ -93,6 +93,7 @@ public class Hotel extends BaseEntity {
     public String toString() {
         return "Hotel{" +
                 "name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", address=" + address +
                 ", roomsCount=" + roomsCount +
