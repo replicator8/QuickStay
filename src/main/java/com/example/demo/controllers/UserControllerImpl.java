@@ -33,30 +33,34 @@ public class UserControllerImpl implements UserController {
         this.bookingService = bookingService;
     }
 
+    // MARK: ok
     @Override
     @GetMapping("/getActiveBookings/{userUUID}")
-    public String getActiveBookings(@PathVariable String userUUID) {
+    public List<UserActiveBookingsViewModel> getActiveBookings(@PathVariable String userUUID) {
         List<UserActiveBookingsViewModel> bookings = userService.getActiveBookings(userUUID);
         // TODO: display bookings
 
-        return "User profile";
+        return bookings;
     }
 
+    // MARK: check soon
     @Override
     @GetMapping("/getArchiveBookings/{userUUID}")
-    public String getArchiveBookings(@PathVariable String userUUID) {
+    public List<UserArchiveBookingsViewModel> getArchiveBookings(@PathVariable String userUUID) {
         List<UserArchiveBookingsViewModel> bookings = userService.getArchiveBookings(userUUID);
         // TODO: display bookings
 
-        return "User profile";
+        return bookings;
     }
 
+    // MARK: ok
     @Override
     @DeleteMapping("/cancelBooking/{bookingUUID}")
     public void cancelBooking(@PathVariable String bookingUUID) {
         bookingService.deleteBooking(bookingUUID);
     }
 
+    // MARK: ok
     @Override
     @PutMapping("/rateBooking/{bookingUUID}/{rating}")
     public void rateBooking(@PathVariable String bookingUUID, @PathVariable double rating) {

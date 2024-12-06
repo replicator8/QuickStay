@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         int cnt = 1;
         for (Booking booking: bookings) {
             String title = "Бронирование " + cnt;
-            String description = booking.getDateStart().getDayOfMonth() + " " + booking.getDateStart().getMonth() + " - " + booking.getDateEnd().getDayOfMonth() + " " + booking.getDateEnd().getMonth() + " for: " + booking.getPrice();
+            String description = booking.getDateStart().getDayOfMonth() + " " + booking.getDateStart().getMonth() + " - " + booking.getDateEnd().getDayOfMonth() + " " + booking.getDateEnd().getMonth() + " for: " + booking.getPrice() + " RUB.";
             URL photo = booking.getRoom().getPhoto();
 
             userBookings.add(new UserActiveBookingsViewModel(
