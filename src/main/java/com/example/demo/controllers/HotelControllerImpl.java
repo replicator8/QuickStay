@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("hotel")
+@RequestMapping("/hotel")
 public class HotelControllerImpl implements HotelController {
     private HotelService hotelService;
     private UserService userService;
@@ -52,14 +52,20 @@ public class HotelControllerImpl implements HotelController {
         userService.createBooking(model);
     }
 
-    @GetMapping("/hotels/{id}")
+    // MARK: ok
+    @GetMapping("/{id}")
     Hotel getHotel(@PathVariable String id) {
         return hotelService.findById(id);
     }
 
-    @GetMapping("/hotels/{id}/rating")
+    @GetMapping("/{id}/rating")
     Double getHotelRating(@PathVariable String id) {
         return hotelService.findById(id).getRating();
     }
 
+    // MARK: ok
+    @GetMapping("/getAll")
+    public List<Hotel> getAllHotels() {
+        return hotelService.findAll();
+    }
 }

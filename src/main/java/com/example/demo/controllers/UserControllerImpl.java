@@ -64,11 +64,13 @@ public class UserControllerImpl implements UserController {
         hotelService.updateRating(hotelUUID, rating);
     }
 
+    // MARK: ok
     @GetMapping("/getAll")
     List<User> getUsers() {
         return userService.findAll();
     }
 
+    // MARK: ok
     @GetMapping("/{id}")
     User getUser(@PathVariable String id) {
         return userService.findById(id);

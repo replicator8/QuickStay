@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/bookings")
 public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;
 
@@ -18,21 +19,24 @@ public class BookingControllerImpl implements BookingController {
         this.bookingService = bookingService;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/getHotels")
-    public String getHotels(@RequestBody BookingViewModel bookingViewModel) {
+    public List<HotelViewModel> getHotels(@RequestBody BookingViewModel bookingViewModel) {
         // TODO: add to page
         List<HotelViewModel> hotels = bookingService.getHotels(bookingViewModel);
 
-        return "Booking";
+        return hotels;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/getHotelsWithFilter")
-    public String getHotelsWithFilter(@RequestBody BookingViewModelFilter filter) {
+    public List<HotelViewModel> getHotelsWithFilter(@RequestBody BookingViewModelFilter filter) {
         // TODO: add to page
         List<HotelViewModel> hotels = bookingService.getHotelsWithFilter(filter);
 
-        return "Booking";
+        return hotels;
     }
+
 }
