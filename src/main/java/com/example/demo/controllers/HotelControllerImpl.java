@@ -1,7 +1,9 @@
 package com.example.demo.controllers;
 
 import com.example.demo.domain.Hotel;
+import com.example.demo.domain.Room;
 import com.example.demo.service.HotelService;
+import com.example.demo.service.RoomService;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.HotelController;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
@@ -17,6 +19,7 @@ import java.util.List;
 public class HotelControllerImpl implements HotelController {
     private HotelService hotelService;
     private UserService userService;
+    private RoomService roomService;
 
     @Autowired
     public void setHotelService(HotelService hotelService) {
@@ -28,24 +31,32 @@ public class HotelControllerImpl implements HotelController {
         this.userService = userService;
     }
 
+    @Autowired
+    public void setRoomService(RoomService roomService) {
+        this.roomService = roomService;
+    }
+
+    // MARK: invalid check available & crash
     @Override
     @PostMapping("/getRooms")
-    public String getHotelRooms(RoomBookingModel roomBookingModel) {
+    public List<RoomViewModel> getHotelRooms(RoomBookingModel roomBookingModel) {
         // TODO: add to page
         List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(roomBookingModel);
 
-        return "Hotel";
+        return rooms;
     }
 
+    // MARK: same
     @Override
     @PostMapping("/getRoomsWithFilter")
-    public String getHotelRoomsWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
+    public List<RoomViewModel> getHotelRoomsWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
         // TODO: add to page
         List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDatesFilter(roomBookingModelFilter);
 
-        return "Hotel";
+        return rooms;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/createBooking")
     public void createBooking(@RequestBody BookingCreateInputModel model) {
@@ -58,6 +69,7 @@ public class HotelControllerImpl implements HotelController {
         return hotelService.findById(id);
     }
 
+    // MARK: ok
     @GetMapping("/{id}/rating")
     Double getHotelRating(@PathVariable String id) {
         return hotelService.findById(id).getRating();
@@ -67,5 +79,11 @@ public class HotelControllerImpl implements HotelController {
     @GetMapping("/getAll")
     public List<Hotel> getAllHotels() {
         return hotelService.findAll();
+    }
+
+    // MARK: ok
+    @GetMapping("/getRoomById/{roomUUID}")
+    public Room getRoomById(@PathVariable String roomUUID) {
+        return roomService.findById(roomUUID);
     }
 }
