@@ -20,15 +20,18 @@ public class LoginControllerImpl implements LoginController {
         this.userService = userService;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/auth")
-    public void signIn(@RequestBody UserAuthViewModel userAuthViewModel) {
+    public String signIn(@RequestBody UserAuthViewModel userAuthViewModel) {
         User user = userService.findByUserName(userAuthViewModel.userName());
         if (user != null) {
             if (user.getPassword().equals(userAuthViewModel.password())) {
-                // TODO: open user acc page
+                // TODO: ~
+                return "Success!";
             }
         }
+        return "Try Again!";
     }
 
 }
