@@ -60,7 +60,7 @@ public class Address extends BaseEntity {
 
     @Transient
     public String getFullAddress() {
-        return street + ", " + city + ", " + street + ", " + house;
+        return country + ", " + city + ", " + street + ", " + house;
     }
 
     @Override

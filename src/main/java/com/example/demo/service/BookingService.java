@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Booking;
+import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
@@ -13,4 +14,5 @@ public interface BookingService {
     boolean deleteBooking(String bookingUUID);
     List<HotelViewModel> getHotels(BookingViewModel model);
     List<HotelViewModel> getHotelsWithFilter(BookingViewModelFilter model);
+    List<AdminBookingViewModel> getAdminBookingsForHotelName(String hotelName);
 }

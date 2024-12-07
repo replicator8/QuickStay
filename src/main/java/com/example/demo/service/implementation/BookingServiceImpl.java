@@ -2,11 +2,13 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Booking;
 import com.example.demo.domain.Hotel;
+import com.example.demo.domain.User;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
+import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
@@ -95,5 +97,26 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return models;
+    }
+
+    @Override
+    public List<AdminBookingViewModel> getAdminBookingsForHotelName(String hotelName) {
+        List<Booking> bookings = bookingRepository.getHotelBookingsByName(hotelName);
+        List<AdminBookingViewModel> hotelBookings = new ArrayList<>();
+
+        int cnt = 1;
+        for (Booking value: bookings) {
+            User user = value.getUser();
+            String description = value.getDateStart().getDayOfMonth() + " " + value.getDateStart().getMonth() + " - " + value.getDateEnd().getDayOfMonth() + " " + value.getDateEnd().getMonth() + " for: " + value.getPrice() + " RUB." + "\n" + value.getRoom().getHotel().getName() + ", " + value.getRoom().getHotel().getAddress().getFullAddress() + "\n" + value.getRoom().getRoomType().getRus() + " номер";
+
+            hotelBookings.add(new AdminBookingViewModel(
+                    "Бронирование " + cnt,
+                  description,
+                    user.getUserName()
+            ));
+            cnt++;
+        }
+
+        return hotelBookings;
     }
 }
