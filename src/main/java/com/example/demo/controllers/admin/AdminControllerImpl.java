@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.admin;
 
 import com.example.demo.service.BookingService;
 import com.example.demo.service.HotelService;

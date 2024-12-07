@@ -9,4 +9,5 @@ public interface RoomService {
     Room findById(String uuid);
     void setDiscount(String uuid, int percentageNumber);
     List<RoomViewModelCustom> getCustomRooms(CustomBookingInputModel model);
+    List<Room> findAll();
 }

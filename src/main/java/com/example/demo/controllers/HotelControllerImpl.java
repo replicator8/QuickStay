@@ -86,4 +86,9 @@ public class HotelControllerImpl implements HotelController {
     public Room getRoomById(@PathVariable String roomUUID) {
         return roomService.findById(roomUUID);
     }
+
+    @GetMapping("/getAllRooms")
+    public List<Room> getAllRooms() {
+        return roomService.findAll();
+    }
 }
