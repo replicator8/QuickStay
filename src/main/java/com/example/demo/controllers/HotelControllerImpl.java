@@ -104,11 +104,13 @@ public class HotelControllerImpl implements HotelController {
         return roomService.findById(roomUUID);
     }
 
+    // MARK: ok
     @GetMapping("/getAllRooms")
     public List<Room> getAllRooms() {
         return roomService.findAll();
     }
 
+    // MARK: ok
     @GetMapping("/getHotelRooms/{hotelUUID}")
     public List<Room> getHotelRooms(@PathVariable String hotelUUID) {
         return hotelService.getAllRooms(hotelUUID);
