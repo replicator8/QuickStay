@@ -28,8 +28,7 @@ public interface BookingRepository extends JpaRepository<Booking, String> {
             "where b.room.id = :roomId and :checkDate BETWEEN b.dateStart AND b.dateEnd")
     boolean checkAvailability(@Param("roomId") String roomId, @Param("checkDate") LocalDate checkDate);
 
-    @Query("select case when count(b) > 0 THEN false ELSE true END from Booking b " +
-            "where b.room.id = :roomId and (:endDate BETWEEN b.dateStart AND b.dateEnd or :startDate BETWEEN b.dateStart AND b.dateEnd)")
+    @Query("select case when count(b) > 0 THEN false ELSE true END from Booking b where b.room.id = :roomId and ((:endDate > b.dateStart and :startDate < b.dateEnd))")
     boolean checkAvailabilityForDates(@Param("roomId") String roomId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query("select b from Booking b where b.user.id = :userId")

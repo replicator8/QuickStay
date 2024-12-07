@@ -12,6 +12,8 @@ import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
 import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,22 +38,37 @@ public class HotelControllerImpl implements HotelController {
         this.roomService = roomService;
     }
 
-    // MARK: invalid check available & crash
+    // MARK: ok
     @Override
-    @PostMapping("/getRooms")
-    public List<RoomViewModel> getHotelRooms(RoomBookingModel roomBookingModel) {
-        // TODO: add to page
+    @PostMapping("/getRoomsByDate")
+    public List<RoomViewModel> getHotelRoomsByDate(RoomBookingModel roomBookingModel) {
+        if (roomBookingModel.start().isAfter(roomBookingModel.end())) {
+            throw new IllegalArgumentException("Неверный порядок дат");
+        }
+
+        if (roomBookingModel.start().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Выберите правильную дату");
+        }
+
         List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(roomBookingModel);
+        // TODO: add to page
 
         return rooms;
     }
 
-    // MARK: same
+    // MARK: ok
     @Override
-    @PostMapping("/getRoomsWithFilter")
-    public List<RoomViewModel> getHotelRoomsWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
-        // TODO: add to page
+    @PostMapping("/getRoomsByDateWithFilter")
+    public List<RoomViewModel> getHotelRoomsByDateWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
+        if (roomBookingModelFilter.start().isAfter(roomBookingModelFilter.end())) {
+            throw new IllegalArgumentException("Неверный порядок дат");
+        }
+
+        if (roomBookingModelFilter.start().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Выберите правильную дату");
+        }
         List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDatesFilter(roomBookingModelFilter);
+        // TODO: add to page
 
         return rooms;
     }
@@ -90,5 +107,10 @@ public class HotelControllerImpl implements HotelController {
     @GetMapping("/getAllRooms")
     public List<Room> getAllRooms() {
         return roomService.findAll();
+    }
+
+    @GetMapping("/getHotelRooms/{hotelUUID}")
+    public List<Room> getHotelRooms(@PathVariable String hotelUUID) {
+        return hotelService.getAllRooms(hotelUUID);
     }
 }

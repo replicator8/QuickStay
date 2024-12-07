@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -92,18 +93,14 @@ public class HotelServiceImpl implements HotelService {
         // get all hotel rooms
         List<Room> allRooms = hotelRepository.getAllRooms(hotelId);
 
-        List<RoomViewModel> rooms = new ArrayList<>();
-
         // check if room is available
-        for (Room room: allRooms) {
-            String roomUUID = room.getId();
-            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
-                allRooms.remove(room);
-            }
-        }
+        List<Room> availableRooms = allRooms.stream()
+                .filter(room -> bookingRepository.checkAvailabilityForDates(room.getId(), startDate, endDate))
+                .collect(Collectors.toList());
 
         // map
-        for (Room room: allRooms) {
+        List<RoomViewModel> rooms = new ArrayList<>();
+        for (Room room: availableRooms) {
             rooms.add(new RoomViewModel(
                     room.getId(),
                     room.getRoomType().getRus(),
@@ -127,18 +124,14 @@ public class HotelServiceImpl implements HotelService {
         // get all hotel rooms by type
         List<Room> allRooms = hotelRepository.getAllRoomsByType(hotelId, type);
 
-        List<RoomViewModel> rooms = new ArrayList<>();
-
         // check if room is available
-        for (Room room: allRooms) {
-            String roomUUID = room.getId();
-            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
-                allRooms.remove(room);
-            }
-        }
+        List<Room> availableRooms = allRooms.stream()
+                .filter(room -> bookingRepository.checkAvailabilityForDates(room.getId(), startDate, endDate))
+                .collect(Collectors.toList());
 
         // map
-        for (Room room: allRooms) {
+        List<RoomViewModel> rooms = new ArrayList<>();
+        for (Room room: availableRooms) {
             rooms.add(new RoomViewModel(
                     room.getId(),
                     room.getRoomType().getRus(),
