@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -64,26 +65,22 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomViewModelCustom> getCustomRooms(CustomBookingInputModel model) {
-        // get all rooms which suits by price
         int totalDays = (int) ChronoUnit.DAYS.between(model.start(), model.end());
-
         LocalDate startDate = model.start();
         LocalDate endDate = model.end();
 
+        // get all rooms which suits by price
         List<Room> roomsSuitByPrice = roomRepository.getRoomsByPrice(totalDays, model.price());
 
         // check this rooms to be not booked for dates
-        for (Room room: roomsSuitByPrice) {
-            String roomUUID = room.getId();
-            if (!bookingRepository.checkAvailabilityForDates(roomUUID, startDate, endDate)) {
-                roomsSuitByPrice.remove(room);
-            }
-        }
+        List<Room> availableRooms = roomsSuitByPrice.stream()
+                .filter(room -> bookingRepository.checkAvailabilityForDates(room.getId(), startDate, endDate))
+                .collect(Collectors.toList());
 
         // map to view model
         List<RoomViewModelCustom> rooms = new ArrayList<>();
 
-        for (Room room: roomsSuitByPrice) {
+        for (Room room: availableRooms) {
             rooms.add(new RoomViewModelCustom(
                     room.getId(),
                     room.getHotel().getName(),

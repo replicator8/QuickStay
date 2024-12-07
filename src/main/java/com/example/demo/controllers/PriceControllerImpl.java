@@ -29,6 +29,7 @@ public class PriceControllerImpl implements PriceController {
         this.roomService = roomService;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/getRooms")
     public List<RoomViewModelCustom> getRooms(@RequestBody CustomBookingInputModel customBookingInputModel) {
@@ -38,6 +39,7 @@ public class PriceControllerImpl implements PriceController {
         return rooms;
     }
 
+    // MARK: ok
     @Override
     @PostMapping("/createBooking")
     public void createBooking(@RequestBody BookingCreateInputModel model) {
