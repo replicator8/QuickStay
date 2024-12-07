@@ -173,7 +173,8 @@ public class UserServiceImpl implements UserService {
         String userName = userModel.userName();
         String password = userModel.password();
         int age = userModel.age();
-        double balance = new Random().nextDouble(2000);
+        String strBalance = String.format("%.2f", new Random().nextDouble(100_000));
+        double balance = Double.parseDouble(strBalance);
 
         User user = new User(firstName, lastName, userName, password, age, balance);
         userRepository.save(user);

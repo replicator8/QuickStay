@@ -35,7 +35,7 @@ public class Hotel extends BaseEntity {
         this.name = name;
     }
 
-    @Column(name = "description", nullable = false, length = 127)
+    @Column(name = "description", nullable = false)
     public String getDescription() {
         return description;
     }
