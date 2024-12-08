@@ -4,10 +4,11 @@ import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.controllers.AdminController;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/admin")
 public class AdminControllerImpl implements AdminController {
     private BookingService bookingService;

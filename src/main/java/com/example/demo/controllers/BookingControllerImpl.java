@@ -6,10 +6,11 @@ import com.example.quickstay_contracts.viewmodel.BookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/bookings")
 public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;

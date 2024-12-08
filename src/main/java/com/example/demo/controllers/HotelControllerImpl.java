@@ -11,12 +11,12 @@ import com.example.quickstay_contracts.viewmodel.RoomBookingModel;
 import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
 import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/hotel")
 public class HotelControllerImpl implements HotelController {
     private HotelService hotelService;

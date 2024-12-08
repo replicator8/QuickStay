@@ -8,10 +8,11 @@ import com.example.quickstay_contracts.controllers.UserController;
 import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserControllerImpl implements UserController {
     private UserService userService;

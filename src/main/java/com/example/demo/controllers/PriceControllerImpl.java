@@ -7,13 +7,13 @@ import com.example.quickstay_contracts.input.BookingCreateInputModel;
 import com.example.quickstay_contracts.input.CustomBookingInputModel;
 import com.example.quickstay_contracts.viewmodel.RoomViewModelCustom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/price")
 public class PriceControllerImpl implements PriceController {
     private UserService userService;
