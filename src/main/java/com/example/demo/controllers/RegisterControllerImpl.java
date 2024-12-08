@@ -2,14 +2,13 @@ package com.example.demo.controllers;
 
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.RegisterController;
-import com.example.quickstay_contracts.viewmodel.UserRegisterViewModel;
+import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/register")
@@ -23,15 +22,19 @@ public class RegisterControllerImpl implements RegisterController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("title", "Register");
+        model.addAttribute("form", new UserRegisterForm("", "", "", "", 18));
         return "index";
     }
 
-    // MARK: ok
     @Override
     @PostMapping("/signUp")
-    public void signUp(UserRegisterViewModel userRegisterViewModel) {
-        userService.createUser(userRegisterViewModel);
-        // TODO: open user acc page
+    public String signUp(@Valid @ModelAttribute("form") UserRegisterForm form, Model model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("form", form);
+            return "/";
+        }
+
+        userService.createUser(form);
+        return "booking";
     }
 }

@@ -5,7 +5,7 @@ import com.example.demo.domain.User;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
 import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
-import com.example.quickstay_contracts.viewmodel.UserRegisterViewModel;
+import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,5 +20,5 @@ public interface UserService {
     List<Booking> getUserBookings(String userId);
     List<UserActiveBookingsViewModel> getActiveBookings(String userUUID);
     List<UserArchiveBookingsViewModel> getArchiveBookings(String userUUID);
-    void createUser(UserRegisterViewModel userModel);
+    void createUser(UserRegisterForm userModel);
 }

@@ -11,7 +11,7 @@ import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
 import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
-import com.example.quickstay_contracts.viewmodel.UserRegisterViewModel;
+import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserRegisterViewModel userModel) {
+    public void createUser(UserRegisterForm userModel) {
         String firstName = userModel.firstName();
         String lastName = userModel.lastName();
         String userName = userModel.userName();
