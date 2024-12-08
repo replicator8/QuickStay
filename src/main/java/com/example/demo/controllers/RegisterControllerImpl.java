@@ -31,7 +31,7 @@ public class RegisterControllerImpl implements RegisterController {
     public String signUp(@Valid @ModelAttribute("form") UserRegisterForm form, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("form", form);
-            return "/";
+            return "index";
         }
 
         userService.createUser(form);

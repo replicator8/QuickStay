@@ -3,14 +3,16 @@ package com.example.demo.controllers;
 import com.example.demo.domain.User;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.LoginController;
-import com.example.quickstay_contracts.viewmodel.UserAuthViewModel;
+import com.example.quickstay_contracts.viewmodel.UserAuthForm;
+import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/login")
 public class LoginControllerImpl implements LoginController {
     private UserService userService;
@@ -20,18 +22,27 @@ public class LoginControllerImpl implements LoginController {
         this.userService = userService;
     }
 
-    // MARK: ok
+    @GetMapping("/")
+    public String signIn(Model model) {
+        model.addAttribute("form", new UserAuthForm("", ""));
+        return "login";
+    }
+
     @Override
     @PostMapping("/auth")
-    public String signIn(@RequestBody UserAuthViewModel userAuthViewModel) {
-        User user = userService.findByUserName(userAuthViewModel.userName());
+    public String signIn(@Valid @ModelAttribute("form") UserAuthForm form, Model model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("form", form);
+            return "login";
+        }
+
+        User user = userService.findByUserName(form.userName());
         if (user != null) {
-            if (user.getPassword().equals(userAuthViewModel.password())) {
-                // TODO: ~
-                return "Success!";
+            if (user.getPassword().equals(form.password())) {
+                return "booking";
             }
         }
-        return "Try Again!";
+        return "login";
     }
 
 }
