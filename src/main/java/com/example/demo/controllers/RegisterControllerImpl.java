@@ -24,21 +24,24 @@ public class RegisterControllerImpl implements RegisterController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("model", new BaseViewModel("Register"));
-        model.addAttribute("form", new UserRegisterForm("", "", "", "", 18));
+        model.addAttribute("registerForm", new UserRegisterForm("", "", "", "", 18));
         return "index";
     }
 
     @Override
     @PostMapping("/signUp")
-    public String signUp(@Valid @ModelAttribute("form") UserRegisterForm form, Model model, BindingResult bindingResult) {
+    public String signUp(@Valid @ModelAttribute("registerForm") UserRegisterForm form, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("form", form);
+            model.addAttribute("registerForm", form);
             return "index";
         }
-        model.addAttribute("model", new BaseViewModel("Register"));
+        model.addAttribute("title", "Booking");
 
         userService.createUser(form);
-        return "booking";
+        String uuid = userService.findByUserName(form.userName()).getId();
+        model.addAttribute("userUUID", uuid);
+
+        return "redirect:/bookings/getHotels";
     }
 
     public BaseViewModel createBaseViewModel(String title) {

@@ -26,15 +26,15 @@ public class LoginControllerImpl implements LoginController {
     @GetMapping("/")
     public String signIn(Model model) {
         model.addAttribute("model", new BaseViewModel("Login"));
-        model.addAttribute("form", new UserAuthForm("", ""));
+        model.addAttribute("loginForm", new UserAuthForm("", ""));
         return "login";
     }
 
     @Override
     @PostMapping("/auth")
-    public String signIn(@Valid @ModelAttribute("form") UserAuthForm form, Model model, BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute("loginForm") UserAuthForm form, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("form", form);
+            model.addAttribute("loginForm", form);
             return "login";
         }
         model.addAttribute("model", new BaseViewModel("Login"));
@@ -42,7 +42,9 @@ public class LoginControllerImpl implements LoginController {
         User user = userService.findByUserName(form.userName());
         if (user != null) {
             if (user.getPassword().equals(form.password())) {
-                return "booking";
+                String uuid = userService.findByUserName(form.userName()).getId();
+                model.addAttribute("userUUID", uuid);
+                return "redirect:/bookings/getHotels";
             }
         }
         return "login";

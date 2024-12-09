@@ -9,10 +9,14 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
-import com.example.quickstay_contracts.viewmodel.BookingViewModel;
-import com.example.quickstay_contracts.viewmodel.BookingViewModelFilter;
+import com.example.quickstay_contracts.viewmodel.BookingForm;
+import com.example.quickstay_contracts.viewmodel.BookingFilterForm;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -69,34 +73,31 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<HotelViewModel> getHotels(BookingViewModel model) {
-        String country = model.country();
-        String city = model.city();
-
-        List<Hotel> hotels = hotelRepository.getHotelByCountryAndCity(country, city);
-        List<HotelViewModel> models = new ArrayList<>(hotels.size());
-
-        for (Hotel hotel: hotels) {
-            models.add(new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
-        }
-
-        return models;
-    }
-
-    @Override
-    public List<HotelViewModel> getHotelsWithFilter(BookingViewModelFilter model) {
+    public Page<HotelViewModel> getHotels(BookingForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size(), Sort.by(Sort.Direction.DESC,"rating"));
         String country = model.country();
         String city = model.city();
         double rating = model.rating();
+        // TODO: session storage save data's
 
-        List<Hotel> hotels = hotelRepository.getHotelByCountryAndCityFilter(country, city, rating);
-        List<HotelViewModel> models = new ArrayList<>(hotels.size());
-
-        for (Hotel hotel: hotels) {
-            models.add(new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        if (city.isEmpty()) {
+            Page<Hotel> hotels = hotelRepository.getAllHotels(pageable);
+            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
         }
 
-        return models;
+        if (rating != 0.0) {
+            Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCityFilter(country, city, rating, pageable);
+            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        }
+        Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCity(country, city, pageable);
+
+        return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+    }
+
+    @Override
+    public Page<HotelViewModel> getHotelsWithFilter(BookingForm model) {
+        Page<HotelViewModel> hotels = getHotels(model);
+        return hotels;
     }
 
     @Override

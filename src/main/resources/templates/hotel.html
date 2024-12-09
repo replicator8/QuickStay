@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head" xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:if="${title}" th:text="${title}">QuickStay</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
-
+    <h2 th:text="'Название отеля: ' + ${hotelName}">Название отеля</h2>
+    <h4 th:text="'UUID пользователя: ' + ${userUUID}">UUID пользователя</h4>
 </body>
 </html>

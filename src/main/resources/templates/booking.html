@@ -1,72 +1,88 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head th:replace="fragments/head"/>-->
-<!--<body class="d-flex flex-column h-100">-->
-<!--<main class="flex-shrink-0">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-2"></div>-->
-<!--            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">-->
-<!--                <h2 class="text-center text-dark mt-5">Поиск книг</h2>-->
-<!--                <h1>Quickstay</h1>-->
-<!--                <p>Сервис для бронирования отелей по всему миру</p>-->
-<!--                <hr>-->
-<!--                <form th:action="@{/books}"-->
-<!--                      th:method="get"-->
-<!--                      th:object="${form}"-->
-<!--                      class="mb-3">-->
-<!--                    <div class="input-group">-->
-<!--                        <input type="text"-->
-<!--                               th:field="*{searchTerm}"-->
-<!--                               class="form-control"-->
-<!--                               placeholder="Поиск по названию или автору"/>-->
-<!--                        <input type="hidden" th:field="*{page}" />-->
-<!--                        <input type="hidden" th:field="*{size}" />-->
-<!--                        <button class="btn btn-primary" type="submit">Поиск</button>-->
-<!--                    </div>-->
-<!--                </form>-->
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:if="${title}" th:text="${title}">QuickStay</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <h1>Quickstay</h1>
+                <p>Сервис для бронирования отелей по всему миру</p>
+                <hr>
+                <form th:action="@{/bookings/getHotels}"
+                      th:method="get"
+                      th:object="${bookingForm}"
+                      class="m-md-auto w-80 pb-3">
 
-<!--                <div th:if="${#lists.isEmpty(model.books)}" class="alert alert-info">-->
-<!--                    Книги не найдены-->
-<!--                </div>-->
+                    <div class="input-group">
+                        <input th:field="*{country}"
+                               type="text"
+                               class="form-control"
+                               id="country"
+                               placeholder="Введите название страны"/>
+                        <input th:field="*{city}"
+                               type="text"
+                               class="form-control"
+                               id="city"
+                               placeholder="Введите название города"/>
+                        <input th:field="*{start}"
+                               type="date"
+                               class="form-control"
+                               id="start"
+                               placeholder="Выберите начальную дату"/>
+                        <input th:field="*{end}"
+                               type="date"
+                               class="form-control"
+                               id="end"
+                               placeholder="Выберите конечную дату"/>
+                        <input type="hidden" th:field="*{page}" />
+                        <input type="hidden" th:field="*{size}" />
+                        <input type="hidden" th:field="*{rating}" />
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </form>
 
-<!--                <div th:if="${not #lists.isEmpty(model.books)}">-->
-<!--                    <div th:each="book : ${model.books}"-->
-<!--                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">-->
-<!--                        <h2 th:text="'Название: ' + ${book.title}">Название книги</h2>-->
-<!--                        <h4 th:text="'Автор: ' + ${book.author}">Автор книги</h4>-->
-<!--                        <h4 th:text="'Год издания: ' + ${book.year}">Год издания</h4>-->
-<!--                        <div class="mt-2">-->
-<!--                            <a class="btn btn-secondary"-->
-<!--                               th:href="@{/books/{id}(id=${book.id})}">Подробнее</a>-->
-<!--                            <a class="btn btn-primary"-->
-<!--                               th:href="@{/books/{id}/edit(id=${book.id})}">Редактировать</a>-->
-<!--                            <a class="btn btn-danger"-->
-<!--                               th:href="@{/books/{id}/delete(id=${book.id})}"-->
-<!--                               onclick="return confirm('Вы уверены, что хотите удалить эту книгу?');">Удалить</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                <div th:if="${#lists.isEmpty(model.hotels)}" class="alert alert-info">
+                    Отели не найдены
+                </div>
 
-<!--                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">-->
-<!--                        <ul class="pagination justify-content-center">-->
-<!--                            <li class="page-item"-->
-<!--                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"-->
-<!--                                th:classappend="${pageNumber == form.page} ? 'active'">-->
-<!--                                <a class="page-link"-->
-<!--                                   th:href="@{/books(page=${pageNumber}, size=${form.size}, searchTerm=${form.searchTerm})}"-->
-<!--                                   th:text="${pageNumber}">1</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </nav>-->
-<!--                </div>-->
+                <div th:if="${not #lists.isEmpty(model.hotels)}">
+                    <div th:each="hotel : ${model.hotels}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
 
-<!--                <div class="mt-4">-->
-<!--                    <a class="btn btn-success" th:href="@{/books/create}">Добавить новую книгу</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</main>-->
-<!--<footer th:replace="fragments/footer"/>-->
-<!--</body>-->
-<!--</html>-->
+                        <a th:href="@{/bookings/hotelDetails(hotelName=${hotel.name})}" class="btn d-flex flex-column border rounded">
+                            <h2 th:text="'Название: ' + ${hotel.name}">Название отеля</h2>
+                            <h4 th:text="'Описание: ' + ${hotel.description}">Описание отеля</h4>
+                            <h4 th:text="'Рейтинг: ' + ${hotel.rating}">Рейтинг отеля</h4>
+                            <div class="text-center w-100">
+                                <img th:src="${hotel.photo}" alt="Hotel photo here" class="hotel-photo" style="width: 280px; height: 280px;">
+                            </div>
+                        </a>
+
+                    </div>
+
+                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"
+                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
+                                th:classappend="${pageNumber == form.page} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/bookings/getHotels(page=${pageNumber}, size=${form.size}, country=${form.country}, city=${form.city}, start=${form.start}, end=${form.end}, rating=${form.rating})}"
+                                   th:text="${pageNumber}">1</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
