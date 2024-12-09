@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.domain.User;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.LoginController;
+import com.example.quickstay_contracts.viewmodel.BaseViewModel;
 import com.example.quickstay_contracts.viewmodel.UserAuthForm;
 import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class LoginControllerImpl implements LoginController {
 
     @GetMapping("/")
     public String signIn(Model model) {
+        model.addAttribute("model", new BaseViewModel("Login"));
         model.addAttribute("form", new UserAuthForm("", ""));
         return "login";
     }
@@ -35,6 +37,7 @@ public class LoginControllerImpl implements LoginController {
             model.addAttribute("form", form);
             return "login";
         }
+        model.addAttribute("model", new BaseViewModel("Login"));
 
         User user = userService.findByUserName(form.userName());
         if (user != null) {

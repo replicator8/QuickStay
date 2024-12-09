@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.RegisterController;
+import com.example.quickstay_contracts.viewmodel.BaseViewModel;
 import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class RegisterControllerImpl implements RegisterController {
 
     @GetMapping("/")
     public String index(Model model) {
+        model.addAttribute("model", new BaseViewModel("Register"));
         model.addAttribute("form", new UserRegisterForm("", "", "", "", 18));
         return "index";
     }
@@ -33,8 +35,15 @@ public class RegisterControllerImpl implements RegisterController {
             model.addAttribute("form", form);
             return "index";
         }
+        model.addAttribute("model", new BaseViewModel("Register"));
 
         userService.createUser(form);
         return "booking";
+    }
+
+    public BaseViewModel createBaseViewModel(String title) {
+        return new BaseViewModel(
+                title
+        );
     }
 }
