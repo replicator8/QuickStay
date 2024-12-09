@@ -38,7 +38,6 @@ public class HotelControllerImpl implements HotelController {
         this.roomService = roomService;
     }
 
-    // MARK: ok
     @Override
     @PostMapping("/getRoomsByDate")
     public List<RoomViewModel> getHotelRoomsByDate(RoomBookingModel roomBookingModel) {
@@ -51,7 +50,6 @@ public class HotelControllerImpl implements HotelController {
         }
 
         List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(roomBookingModel);
-        // TODO: add to page
 
         return rooms;
     }

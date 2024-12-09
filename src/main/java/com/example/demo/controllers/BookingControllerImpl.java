@@ -56,6 +56,7 @@ public class BookingControllerImpl implements BookingController {
         return "booking";
     }
 
+    // TODO: ~
     @Override
     @GetMapping("/getHotelsWithFilter")
     public String getHotelsWithFilter(@ModelAttribute("bookingForm") BookingForm form, Model model) {
@@ -87,13 +88,21 @@ public class BookingControllerImpl implements BookingController {
     }
 
     @GetMapping("/hotelDetails")
-    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, Model model, HttpSession session) {
+    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session) {
         System.out.println("Selected hotel: " + hotelName);
         System.out.println("Hotel description: " + hotelDescription);
+        System.out.println("Start date: " + start);
+        System.out.println("End date: " + end);
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        String startRes = startDate.getDayOfMonth() + " " + startDate.getMonth() + " " + startDate.getYear();
+        String endRes = endDate.getDayOfMonth() + " " + endDate.getMonth() + " " + endDate.getYear();
 
         model.addAttribute("title", "Hotel");
         model.addAttribute("hotelName", hotelName);
         model.addAttribute("hotelDescription", hotelDescription);
+        model.addAttribute("startDate", startRes);
+        model.addAttribute("endDate", endRes);
 
         System.out.println("User UUID: " + session.getAttribute("userUUID"));
 

@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head" xmlns:th="http://www.thymeleaf.org">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:if="${title}" th:text="${title}">QuickStay</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-</head>
-<body>
-    <h2 th:text="'Название отеля: ' + ${hotelName}">Название отеля</h2>
-    <h4 th:text="'Описание отеля: ' + ${hotelDescription}">Название отеля</h4>
+<head th:replace="fragments/head"></head>
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                    <h1 th:text="${hotelName}">Название отеля</h1>
+                    <p th:text="${hotelDescription}">Описание отеля</p>
+                    <p th:text="'С ' + ${startDate} + ' по ' + ${endDate}">Даты проживания</p>
+                    <hr>
+
+<!--                    <div th:if="${#lists.isEmpty(model.hotels)}" class="alert alert-info">-->
+<!--                        Отели не найдены-->
+<!--                    </div>-->
+
+<!--                    <div th:if="${not #lists.isEmpty(model.hotels)}">-->
+<!--                        <div th:each="hotel : ${model.hotels}"-->
+<!--                             class="d-flex flex-column bg-text mb-3 p-3 border rounded">-->
+<!--                            <a th:href="@{/bookings/hotelDetails(hotelName=${hotel.name}, hotelDescription=${hotel.description})}" class="btn d-flex flex-column border rounded">-->
+<!--                                <h2 th:text="'Название: ' + ${hotel.name}">Название отеля</h2>-->
+<!--                                <h4 th:text="'Описание: ' + ${hotel.description}">Описание отеля</h4>-->
+<!--                                <h4 th:text="'Рейтинг: ' + ${hotel.rating}">Рейтинг отеля</h4>-->
+<!--                                <div class="text-center w-100">-->
+<!--                                    <img th:src="${hotel.photo}" alt="Hotel photo here" class="hotel-photo" style="width: 280px; height: 280px;">-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                        </div>-->
+
+<!--                        <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">-->
+<!--                            <ul class="pagination justify-content-center">-->
+<!--                                <li class="page-item"-->
+<!--                                    th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"-->
+<!--                                    th:classappend="${pageNumber == bookingForm.page} ? 'active'">-->
+<!--                                    <a class="page-link"-->
+<!--                                       th:href="@{/bookings/getHotels(page=${pageNumber}, size=${bookingForm.size}, country=${bookingForm.country}, city=${bookingForm.city}, start=${bookingForm.start}, end=${bookingForm.end}, rating=${bookingForm.rating})}"-->
+<!--                                       th:text="${pageNumber}">1</a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </nav>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/footer"/>
 </body>
 </html>
