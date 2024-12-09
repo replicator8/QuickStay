@@ -56,7 +56,7 @@
                     <div th:each="hotel : ${model.hotels}"
                          class="d-flex flex-column bg-text mb-3 p-3 border rounded">
 
-                        <a th:href="@{/bookings/hotelDetails(hotelName=${hotel.name})}" class="btn d-flex flex-column border rounded">
+                        <a th:href="@{/bookings/hotelDetails(hotelName=${hotel.name}, hotelDescription=${hotel.description})}" class="btn d-flex flex-column border rounded">
                             <h2 th:text="'Название: ' + ${hotel.name}">Название отеля</h2>
                             <h4 th:text="'Описание: ' + ${hotel.description}">Описание отеля</h4>
                             <h4 th:text="'Рейтинг: ' + ${hotel.rating}">Рейтинг отеля</h4>

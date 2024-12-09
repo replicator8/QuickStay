@@ -3,13 +3,18 @@ package com.example.demo.controllers;
 import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.controllers.BookingController;
 import com.example.quickstay_contracts.viewmodel.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/bookings")
@@ -82,10 +87,15 @@ public class BookingControllerImpl implements BookingController {
     }
 
     @GetMapping("/hotelDetails")
-    public String hotelDetails(@RequestParam("hotelName") String hotelName, Model model) {
+    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, Model model, HttpSession session) {
         System.out.println("Selected hotel: " + hotelName);
+        System.out.println("Hotel description: " + hotelDescription);
+
         model.addAttribute("title", "Hotel");
         model.addAttribute("hotelName", hotelName);
+        model.addAttribute("hotelDescription", hotelDescription);
+
+        System.out.println("User UUID: " + session.getAttribute("userUUID"));
 
         return "hotel";
     }

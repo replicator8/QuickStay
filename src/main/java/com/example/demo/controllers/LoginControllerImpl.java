@@ -5,7 +5,7 @@ import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.LoginController;
 import com.example.quickstay_contracts.viewmodel.BaseViewModel;
 import com.example.quickstay_contracts.viewmodel.UserAuthForm;
-import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class LoginControllerImpl implements LoginController {
 
     @Override
     @PostMapping("/auth")
-    public String signIn(@Valid @ModelAttribute("loginForm") UserAuthForm form, Model model, BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute("loginForm") UserAuthForm form, Model model, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("loginForm", form);
             return "login";
@@ -43,8 +43,8 @@ public class LoginControllerImpl implements LoginController {
         if (user != null) {
             if (user.getPassword().equals(form.password())) {
                 String uuid = userService.findByUserName(form.userName()).getId();
-                System.out.println("UUID: " + uuid);
-                model.addAttribute("userUUID", uuid);
+                session.setAttribute("userUUID", uuid);
+
                 return "redirect:/bookings/getHotels";
             }
         }
