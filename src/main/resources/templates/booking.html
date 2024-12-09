@@ -71,9 +71,9 @@
                         <ul class="pagination justify-content-center">
                             <li class="page-item"
                                 th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
-                                th:classappend="${pageNumber == form.page} ? 'active'">
+                                th:classappend="${pageNumber == bookingForm.page} ? 'active'">
                                 <a class="page-link"
-                                   th:href="@{/bookings/getHotels(page=${pageNumber}, size=${form.size}, country=${form.country}, city=${form.city}, start=${form.start}, end=${form.end}, rating=${form.rating})}"
+                                   th:href="@{/bookings/getHotels(page=${pageNumber}, size=${bookingForm.size}, country=${bookingForm.country}, city=${bookingForm.city}, start=${bookingForm.start}, end=${bookingForm.end}, rating=${bookingForm.rating})}"
                                    th:text="${pageNumber}">1</a>
                             </li>
                         </ul>

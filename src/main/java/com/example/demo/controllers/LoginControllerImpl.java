@@ -43,6 +43,7 @@ public class LoginControllerImpl implements LoginController {
         if (user != null) {
             if (user.getPassword().equals(form.password())) {
                 String uuid = userService.findByUserName(form.userName()).getId();
+                System.out.println("UUID: " + uuid);
                 model.addAttribute("userUUID", uuid);
                 return "redirect:/bookings/getHotels";
             }
