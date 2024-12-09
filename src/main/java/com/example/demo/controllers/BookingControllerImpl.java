@@ -1,30 +1,33 @@
 package com.example.demo.controllers;
 
 import com.example.demo.service.BookingService;
+import com.example.demo.service.HotelService;
 import com.example.quickstay_contracts.controllers.BookingController;
 import com.example.quickstay_contracts.viewmodel.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/bookings")
 public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;
+    private HotelService hotelService;
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
+    }
+
+    @Autowired
+    public void setHotelService(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
     @Override
@@ -89,25 +92,27 @@ public class BookingControllerImpl implements BookingController {
     }
 
     @GetMapping("/hotelDetails")
-    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session) {
+    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         System.out.println("Selected hotel: " + hotelName);
         System.out.println("Hotel description: " + hotelDescription);
         System.out.println("Start date: " + start);
         System.out.println("End date: " + end);
+
+        String hotelUUID = hotelService.findByName(hotelName).getId();
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
         String startRes = startDate.getDayOfMonth() + " " + startDate.getMonth() + " " + startDate.getYear();
         String endRes = endDate.getDayOfMonth() + " " + endDate.getMonth() + " " + endDate.getYear();
 
-        model.addAttribute("title", "Hotel");
-        model.addAttribute("hotelName", hotelName);
-        model.addAttribute("hotelDescription", hotelDescription);
-        model.addAttribute("startDate", startRes);
-        model.addAttribute("endDate", endRes);
+        redirectAttributes.addFlashAttribute("title", "Hotel");
+        redirectAttributes.addFlashAttribute("hotelName", hotelName);
+        redirectAttributes.addFlashAttribute("hotelDescription", hotelDescription);
+        redirectAttributes.addFlashAttribute("startDate", startRes);
+        redirectAttributes.addFlashAttribute("endDate", endRes);
 
         System.out.println("User UUID: " + session.getAttribute("userUUID"));
 
-        return "hotel";
+        return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + start + "&end=" + end + "&page=1&size=10";
     }
 
 }

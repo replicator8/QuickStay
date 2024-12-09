@@ -7,12 +7,15 @@ import com.example.demo.service.RoomService;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.HotelController;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
-import com.example.quickstay_contracts.viewmodel.RoomBookingModel;
-import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
-import com.example.quickstay_contracts.viewmodel.RoomViewModel;
+import com.example.quickstay_contracts.viewmodel.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,19 +42,45 @@ public class HotelControllerImpl implements HotelController {
     }
 
     @Override
-    @PostMapping("/getRoomsByDate")
-    public List<RoomViewModel> getHotelRoomsByDate(RoomBookingModel roomBookingModel) {
-        if (roomBookingModel.start().isAfter(roomBookingModel.end())) {
+    @GetMapping("/getRoomsByDate")
+    public String getHotelRoomsByDate(@ModelAttribute("hotelForm") RoomBookingForm form, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (form.start().isAfter(form.end())) {
             throw new IllegalArgumentException("Неверный порядок дат");
         }
 
-        if (roomBookingModel.start().isBefore(LocalDate.now())) {
+        if (form.start().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Выберите правильную дату");
         }
 
-        List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(roomBookingModel);
+        Page<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(form);
+        var roomViewModels = rooms.stream()
+                .map(room -> new RoomViewModel(room.roomUUID(), room.type(), room.description(), room.price(), room.photo()))
+                .toList();
 
-        return rooms;
+        var viewModel = new RoomListViewModel(
+                roomViewModels,
+                rooms.getTotalPages()
+        );
+
+        model.addAttribute("hotelForm", form);
+        model.addAttribute("model", viewModel);
+        model.addAttribute("title", "Hotel");
+
+        String hotelName = hotelService.findById(form.hotelUUID()).getName();
+        String hotelDescription = hotelService.findById(form.hotelUUID()).getDescription();
+        System.out.println("USER UUID: " + session.getAttribute("userUUID"));
+
+        redirectAttributes.addFlashAttribute("title", "Hotel");
+        redirectAttributes.addFlashAttribute("hotelName", hotelName);
+        redirectAttributes.addFlashAttribute("hotelDescription", hotelDescription);
+        redirectAttributes.addFlashAttribute("startDate", form.start());
+        redirectAttributes.addFlashAttribute("endDate", form.end());
+        redirectAttributes.addFlashAttribute("userUUID", session.getAttribute("userUUID"));
+
+        session.setAttribute("startLocalDate", form.start());
+        session.setAttribute("endLocalDate", form.end());
+
+        return "hotel";
     }
 
     // MARK: ok
@@ -74,7 +103,7 @@ public class HotelControllerImpl implements HotelController {
     // MARK: ok
     @Override
     @PostMapping("/createBooking")
-    public void createBooking(@RequestBody BookingCreateInputModel model) {
+    public void createBooking(@ModelAttribute("hotelForm") BookingCreateInputModel model) {
         userService.createBooking(model);
     }
 

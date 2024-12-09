@@ -24,7 +24,7 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
     @Query("select h.photo from Hotel h where h.id = :uuid")
     URL getPhotoByHotelId(@Param(value = "uuid") String uuid);
     @Query(value = "select r from Room r where r.hotel.id = :uuid")
-    List<Room> getAllRooms(@Param(value = "uuid") String uuid);
+    Page<Room> getAllRooms(@Param(value = "uuid") String uuid, Pageable pageable);
     @Query(value = "select r from Room r where r.hotel.id = :uuid and r.roomType = :type")
     List<Room> getAllRoomsByType(@Param(value = "uuid") String uuid, @Param(value = "type") RoomType type);
     @Transactional

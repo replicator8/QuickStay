@@ -8,11 +8,12 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.HotelService;
-import com.example.quickstay_contracts.viewmodel.RoomBookingModel;
+import com.example.quickstay_contracts.viewmodel.RoomBookingForm;
 import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
 import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -84,33 +85,29 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public List<RoomViewModel> getAllFreeRoomsByDates(RoomBookingModel model) {
+    public Page<RoomViewModel> getAllFreeRoomsByDates(RoomBookingForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
         String hotelId = model.hotelUUID();
         LocalDate startDate = model.start();
         LocalDate endDate = model.end();
         int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
 
         // get all hotel rooms
-        List<Room> allRooms = hotelRepository.getAllRooms(hotelId);
+        Page<Room> allRooms = hotelRepository.getAllRooms(hotelId, pageable);
 
-        // check if room is available
-        List<Room> availableRooms = allRooms.stream()
+        // check if room is available & map
+        List<RoomViewModel> availableRooms = allRooms.getContent().stream()
                 .filter(room -> bookingRepository.checkAvailabilityForDates(room.getId(), startDate, endDate))
-                .collect(Collectors.toList());
+                .map(room -> new RoomViewModel(
+                        room.getId(),
+                        room.getRoomType().getRus(),
+                        room.getDescription(),
+                        room.getPrice() * totalDays,
+                        room.getPhoto()
+                ))
+                .toList();
 
-        // map
-        List<RoomViewModel> rooms = new ArrayList<>();
-        for (Room room: availableRooms) {
-            rooms.add(new RoomViewModel(
-                    room.getId(),
-                    room.getRoomType().getRus(),
-                    room.getDescription(),
-                    room.getPrice() * totalDays,
-                    room.getPhoto()
-            ));
-        }
-
-        return rooms;
+        return new PageImpl<>(availableRooms, pageable, allRooms.getTotalElements());
     }
 
     @Override
