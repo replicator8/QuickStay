@@ -7,9 +7,9 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
-                    <h1 th:text="${hotelName}">Название отеля</h1>
-                    <p th:text="${hotelDescription}">Описание отеля</p>
-                    <p th:text="'С ' + ${startDate} + ' по ' + ${endDate}">Даты проживания</p>
+                    <h1 th:text="${#ctx.session.hotelName}">Название отеля</h1>
+                    <p th:text="${#ctx.session.hotelDescription}">Описание отеля</p>
+                    <p th:text="'С ' + ${#ctx.session.startDate} + ' по ' + ${#ctx.session.endDate}">Даты проживания</p>
                     <hr>
 
                     <div th:if="${#lists.isEmpty(model.rooms)}" class="alert alert-info">
@@ -25,13 +25,15 @@
                                 <div class="text-center w-100">
                                     <img th:src="${room.photo}" alt="Room photo here" class="room-photo" style="width: 280px; height: 280px;">
                                 </div>
-
+                            <br>
                             <div class="text-center">
-                                <form th:action="@{/hotel/createBooking}" method="post">
-                                    <input type="hidden" name="roomUUID" th:value="${room.roomUUID}" />
-                                    <input type="hidden" name="userUUID" th:value="${userUUID}" />
-                                    <input type="hidden" name="dateStart" th:value="${#session.getAttribute('startLocalDate')}" />
-                                    <input type="hidden" name="dateEnd" th:value="${#session.getAttribute('endLocalDate')}" />
+                                <form th:action="@{/hotel/createBooking/{roomUUID}(roomUUID=${room.roomUUID})}"
+                                      method="post"
+                                      th:object="${hotelBookingForm}">
+                                    <input type="hidden" th:field="*{roomUUID}" th:value="${room.roomUUID}"/>
+                                    <input type="hidden" th:field="*{userUUID}" th:value="${#ctx.session.userUUID}"/>
+                                    <input type="hidden" th:field="*{dateStart}" th:value="${#ctx.session.startLocalDate}"/>
+                                    <input type="hidden" th:field="*{dateEnd}" th:value="${#ctx.session.endLocalDate}"/>
                                     <button type="submit" class="btn btn-primary w-40">Забронировать</button>
                                 </form>
                             </div>
@@ -44,7 +46,7 @@
                                     th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
                                     th:classappend="${pageNumber == hotelForm.page} ? 'active'">
                                     <a class="page-link"
-                                       th:href="@{/hotel/getRoomsByDate(page=${pageNumber}, size=${hotelForm.size}, hotelUUID=${hotelForm.hotelUUID}, start=${hotelForm.start}, end=${hotelForm.end})}"
+                                       th:href="@{/hotel/getRoomsByDate(page=${pageNumber}, size=${hotelForm.size}, hotelUUID=${hotelForm.hotelUUID}, start=${hotelForm.start}, end=${hotelForm.end}, userUUID=${hotelForm.userUUID})}"
                                        th:text="${pageNumber}">1</a>
                                 </li>
                             </ul>

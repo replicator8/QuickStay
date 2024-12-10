@@ -107,12 +107,16 @@ public class BookingControllerImpl implements BookingController {
         redirectAttributes.addFlashAttribute("title", "Hotel");
         redirectAttributes.addFlashAttribute("hotelName", hotelName);
         redirectAttributes.addFlashAttribute("hotelDescription", hotelDescription);
-        redirectAttributes.addFlashAttribute("startDate", startRes);
-        redirectAttributes.addFlashAttribute("endDate", endRes);
 
-        System.out.println("User UUID: " + session.getAttribute("userUUID"));
+        session.setAttribute("startDate", startRes);
+        session.setAttribute("endDate", endRes);
 
-        return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + start + "&end=" + end + "&page=1&size=10";
+        redirectAttributes.addFlashAttribute("startLocalDate", startDate);
+        redirectAttributes.addFlashAttribute("endLocalDate", endDate);
+
+        String userUUID = session.getAttribute("userUUID").toString();
+
+        return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + start + "&end=" + end + "&page=1&size=10&userUUID=" + userUUID;
     }
 
 }

@@ -8,15 +8,18 @@ import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.HotelController;
 import com.example.quickstay_contracts.input.BookingCreateInputModel;
 import com.example.quickstay_contracts.viewmodel.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -64,26 +67,27 @@ public class HotelControllerImpl implements HotelController {
 
         model.addAttribute("hotelForm", form);
         model.addAttribute("model", viewModel);
+        model.addAttribute("hotelBookingForm", new BookingCreateInputModel());
         model.addAttribute("title", "Hotel");
 
         String hotelName = hotelService.findById(form.hotelUUID()).getName();
         String hotelDescription = hotelService.findById(form.hotelUUID()).getDescription();
-        System.out.println("USER UUID: " + session.getAttribute("userUUID"));
+
+        session.setAttribute("hotelName", hotelName);
+        session.setAttribute("hotelDescription", hotelDescription);
+        session.setAttribute("startLocalDate", form.start());
+        session.setAttribute("endLocalDate", form.end());
+        session.setAttribute("userUUID", form.userUUID());
 
         redirectAttributes.addFlashAttribute("title", "Hotel");
         redirectAttributes.addFlashAttribute("hotelName", hotelName);
-        redirectAttributes.addFlashAttribute("hotelDescription", hotelDescription);
-        redirectAttributes.addFlashAttribute("startDate", form.start());
-        redirectAttributes.addFlashAttribute("endDate", form.end());
-        redirectAttributes.addFlashAttribute("userUUID", session.getAttribute("userUUID"));
-
-        session.setAttribute("startLocalDate", form.start());
-        session.setAttribute("endLocalDate", form.end());
+        redirectAttributes.addFlashAttribute("startLocalDate", session.getAttribute("startLocalDate"));
+        redirectAttributes.addFlashAttribute("endLocalDate", session.getAttribute("endLocalDate"));
 
         return "hotel";
     }
 
-    // MARK: ok
+    // TODO: ~
     @Override
     @PostMapping("/getRoomsByDateWithFilter")
     public List<RoomViewModel> getHotelRoomsByDateWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
@@ -100,44 +104,52 @@ public class HotelControllerImpl implements HotelController {
         return rooms;
     }
 
-    // MARK: ok
-    @Override
-    @PostMapping("/createBooking")
-    public void createBooking(@ModelAttribute("hotelForm") BookingCreateInputModel model) {
-        userService.createBooking(model);
+    @PostMapping("/createBooking/{roomUUID}")
+    public String createBooking(@PathVariable String roomUUID, @ModelAttribute("hotelBookingForm") BookingCreateInputModel form, BindingResult bindingResult, Model model, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("hotelBookingForm", form);
+
+            return "";
+        }
+
+        String hotelUUID = roomService.findById(roomUUID).getHotel().getId();
+
+        String userUUID = (String) session.getAttribute("userUUID");
+        LocalDate startLocalDate = (LocalDate) session.getAttribute("startLocalDate");
+        LocalDate endLocalDate = (LocalDate) session.getAttribute("endLocalDate");
+
+        form = new BookingCreateInputModel(roomUUID, userUUID, startLocalDate, endLocalDate);
+        System.out.println(form);
+        userService.createBooking(form);
+
+        return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + form.getDateStart() + "&end=" + form.getDateEnd() + "&page=1&size=10&userUUID=" + form.getUserUUID();
     }
 
-    // MARK: ok
     @GetMapping("/{id}")
     Hotel getHotel(@PathVariable String id) {
         return hotelService.findById(id);
     }
 
-    // MARK: ok
     @GetMapping("/{id}/rating")
     Double getHotelRating(@PathVariable String id) {
         return hotelService.findById(id).getRating();
     }
 
-    // MARK: ok
     @GetMapping("/getAll")
     public List<Hotel> getAllHotels() {
         return hotelService.findAll();
     }
 
-    // MARK: ok
     @GetMapping("/getRoomById/{roomUUID}")
     public Room getRoomById(@PathVariable String roomUUID) {
         return roomService.findById(roomUUID);
     }
 
-    // MARK: ok
     @GetMapping("/getAllRooms")
     public List<Room> getAllRooms() {
         return roomService.findAll();
     }
 
-    // MARK: ok
     @GetMapping("/getHotelRooms/{hotelUUID}")
     public List<Room> getHotelRooms(@PathVariable String hotelUUID) {
         return hotelService.getAllRooms(hotelUUID);
