@@ -6,9 +6,13 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.RoomService;
-import com.example.quickstay_contracts.input.CustomBookingInputModel;
+import com.example.quickstay_contracts.input.CustomBookingForm;
 import com.example.quickstay_contracts.viewmodel.RoomViewModelCustom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -64,13 +68,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomViewModelCustom> getCustomRooms(CustomBookingInputModel model) {
+    public Page<RoomViewModelCustom> getCustomRooms(CustomBookingForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
         int totalDays = (int) ChronoUnit.DAYS.between(model.start(), model.end());
         LocalDate startDate = model.start();
         LocalDate endDate = model.end();
 
         // get all rooms which suits by price
-        List<Room> roomsSuitByPrice = roomRepository.getRoomsByPrice(totalDays, model.price());
+        Page<Room> roomsSuitByPrice = roomRepository.getRoomsByPrice(totalDays, model.price(), pageable);
 
         // check this rooms to be not booked for dates
         List<Room> availableRooms = roomsSuitByPrice.stream()
@@ -90,8 +95,7 @@ public class RoomServiceImpl implements RoomService {
                     room.getPhoto()
                     ));
         }
-
-        return rooms;
+        return new PageImpl<>(rooms, pageable, roomsSuitByPrice.getTotalElements());
     }
 
     @Override

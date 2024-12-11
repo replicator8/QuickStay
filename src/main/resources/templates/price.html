@@ -1,7 +1,86 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"></head>
-<body>
-    <h1>Price</h1>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <h1>Quickstay</h1>
+                <h5>Сервис для бронирования отелей по всему миру</h5>
+                <hr>
+                <h2>Подбор популярных отелей по цене</h2>
+                <hr>
+                <form th:action="@{/price/getRooms}"
+                      th:method="get"
+                      th:object="${priceForm}"
+                      class="m-md-auto w-80 pb-3">
+
+                    <div class="input-group">
+                        <input th:field="*{price}"
+                               type="number"
+                               class="form-control"
+                               id="price"
+                               value=1000
+                               placeholder="Цена"/>
+                        <input th:field="*{start}"
+                               type="date"
+                               class="form-control"
+                               id="start"
+                               placeholder="Начальная дата"/>
+                        <input th:field="*{end}"
+                               type="date"
+                               class="form-control"
+                               id="end"
+                               placeholder="Конечная дата"/>
+                        <input type="hidden" th:field="*{page}" />
+                        <input type="hidden" th:field="*{size}" />
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </form>
+
+                <div th:if="${#lists.isEmpty(model.rooms)}" class="alert alert-info">
+                    Отели не найдены
+                </div>
+
+                <div th:if="${not #lists.isEmpty(model.rooms)}">
+                    <div th:each="room : ${model.rooms}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+
+                        <div class="btn d-flex flex-column border rounded">
+                            <h2 th:text="'Отель: ' + ${room.hotelName}">Название отеля</h2>
+                            <h4 th:text="'Тип комнаты: ' + ${room.type}">Тип комнаты</h4>
+                            <h4 th:text="'Адрес: ' + ${room.address}">Адрес</h4>
+                            <h4 th:text="'Цена: ' + ${room.price}">Цена</h4>
+                            <p th:text="${room.roomUUID}"></p>
+                            <div class="text-center w-100">
+                                <img th:src="${room.photo}" alt="Room photo here" class="room-photo" style="width: 280px; height: 280px;">
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <button class="btn btn-primary w-50">Забронировать</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"
+                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
+                                th:classappend="${pageNumber == priceForm.page} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/price/getRooms(page=${pageNumber}, size=${priceForm.size}, price=${priceForm.price}, start=${priceForm.start}, end=${priceForm.end})}"
+                                   th:text="${pageNumber}">1</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
 </body>
 </html>
