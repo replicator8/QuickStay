@@ -34,7 +34,6 @@ public class UserControllerImpl implements UserController {
         this.bookingService = bookingService;
     }
 
-    // MARK: ok
     @Override
     @GetMapping("/getActiveBookings/{userUUID}")
     public List<UserActiveBookingsViewModel> getActiveBookings(@PathVariable String userUUID) {
@@ -54,14 +53,12 @@ public class UserControllerImpl implements UserController {
         return bookings;
     }
 
-    // MARK: ok
     @Override
     @DeleteMapping("/cancelBooking/{bookingUUID}")
     public void cancelBooking(@PathVariable String bookingUUID) {
         bookingService.deleteBooking(bookingUUID);
     }
 
-    // MARK: ok
     @Override
     @PutMapping("/rateBooking/{bookingUUID}/{rating}")
     public void rateBooking(@PathVariable String bookingUUID, @PathVariable double rating) {
@@ -69,13 +66,11 @@ public class UserControllerImpl implements UserController {
         hotelService.updateRating(hotelUUID, rating);
     }
 
-    // MARK: ok
     @GetMapping("/getAll")
     List<User> getUsers() {
         return userService.findAll();
     }
 
-    // MARK: ok
     @GetMapping("/{id}")
     User getUser(@PathVariable String id) {
         return userService.findById(id);

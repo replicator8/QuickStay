@@ -8,15 +8,13 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingService;
+import com.example.quickstay_contracts.input.AdminBookingForm;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingForm;
 import com.example.quickstay_contracts.viewmodel.BookingFilterForm;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,11 +60,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllBookings() {
-        return bookingRepository.getAllBookings();
-    }
-
-    @Override
     public boolean deleteBooking(String bookingUUID) {
         bookingRepository.deleteById(bookingUUID);
         return true;
@@ -101,23 +94,66 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<AdminBookingViewModel> getAdminBookingsForHotelName(String hotelName) {
-        List<Booking> bookings = bookingRepository.getHotelBookingsByName(hotelName);
+    public Page<AdminBookingViewModel> getAdminBookingsForHotelName(AdminBookingForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
+
+        if (model.hotelName().isEmpty()) {
+            Page<Booking> bookings = bookingRepository.getAllBookings(pageable);
+            List<AdminBookingViewModel> hotelBookings = new ArrayList<>();
+
+            int cnt = model.page() == 1 ? 1 : ((model.page() - 1) * 10 + 1);
+            for (Booking value: bookings) {
+                User user = value.getUser();
+                String date = value.getDateStart().getDayOfMonth() + " " + value.getDateStart().getMonth() + " - " + value.getDateEnd().getDayOfMonth() + " " + value.getDateEnd().getMonth();
+                String address = value.getRoom().getHotel().getAddress().getFullAddress();
+                String price = value.getPrice() + " руб.";
+                String hotelName = value.getRoom().getHotel().getName();
+                String roomType = value.getRoom().getRoomType().getRus() + " номер";
+                String roomUUID = value.getRoom().getId();
+
+                hotelBookings.add(new AdminBookingViewModel(
+                        value.getId(),
+                        "Бронирование " + cnt,
+                        date,
+                        price,
+                        hotelName,
+                        address,
+                        roomType,
+                        roomUUID,
+                        user.getUserName()
+                ));
+                cnt++;
+            }
+            return new PageImpl<>(hotelBookings, pageable, bookings.getTotalElements());
+        }
+
+        Page<Booking> bookings = bookingRepository.getHotelBookingsByName(model.hotelName(), pageable);
         List<AdminBookingViewModel> hotelBookings = new ArrayList<>();
 
-        int cnt = 1;
+        int cnt = model.page() == 1 ? 1 : ((model.page() - 1) * 10 + 1);
         for (Booking value: bookings) {
             User user = value.getUser();
-            String description = value.getDateStart().getDayOfMonth() + " " + value.getDateStart().getMonth() + " - " + value.getDateEnd().getDayOfMonth() + " " + value.getDateEnd().getMonth() + " for: " + value.getPrice() + " RUB." + "\n" + value.getRoom().getHotel().getName() + ", " + value.getRoom().getHotel().getAddress().getFullAddress() + "\n" + value.getRoom().getRoomType().getRus() + " номер";
+            String date = value.getDateStart().getDayOfMonth() + " " + value.getDateStart().getMonth() + " - " + value.getDateEnd().getDayOfMonth() + " " + value.getDateEnd().getMonth();
+            String address = value.getRoom().getHotel().getAddress().getFullAddress();
+            String price = value.getPrice() + " руб.";
+            String hotelName = value.getRoom().getHotel().getName();
+            String roomType = value.getRoom().getRoomType().getRus() + " номер";
+            String roomUUID = value.getRoom().getId();
 
             hotelBookings.add(new AdminBookingViewModel(
+                    value.getId(),
                     "Бронирование " + cnt,
-                  description,
+                    date,
+                    price,
+                    hotelName,
+                    address,
+                    roomType,
+                    roomUUID,
                     user.getUserName()
             ));
             cnt++;
         }
 
-        return hotelBookings;
+        return new PageImpl<>(hotelBookings, pageable, bookings.getTotalElements());
     }
 }

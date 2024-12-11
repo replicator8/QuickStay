@@ -3,6 +3,8 @@ package com.example.demo.repository;
 import com.example.demo.domain.Booking;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,7 +34,7 @@ public interface BookingRepository extends JpaRepository<Booking, String> {
     @Query("select b from Booking b where b.user.id = :userId")
     List<Booking> getUserBookings(@Param(value = "userId") String userId);
     @Query("select b from Booking b")
-    List<Booking> getAllBookings();
+    Page<Booking> getAllBookings(Pageable pageable);
     @Query("select b from Booking b join Room r on b.room.id = r.id where r.hotel.name = :hotelName")
-    List<Booking> getHotelBookingsByName(@Param(value = "hotelName") String hotelName);
+    Page<Booking> getHotelBookingsByName(@Param(value = "hotelName") String hotelName, Pageable pageable);
 }

@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <h1 th:text="${#ctx.session.userUUID}" >Admin Principles</h1>
+                <h2>Все бронирования</h2>
+                <hr>
+                <form th:action="@{/admin/getAdminAvailableBookings}"
+                      th:method="get"
+                      th:object="${adminForm}"
+                      class="m-md-auto w-80 pb-3">
 
+                    <div class="input-group">
+                        <input th:field="*{hotelName}"
+                               type="text"
+                               class="form-control"
+                               id="hotelName"
+                               placeholder="Название отеля"/>
+                        <input type="hidden" th:field="*{page}" />
+                        <input type="hidden" th:field="*{size}" />
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
+                </form>
+
+                <div th:if="${#lists.isEmpty(model.bookings)}" class="alert alert-info">
+                    Бронирований не найдено
+                </div>
+
+                <div th:if="${not #lists.isEmpty(model.bookings)}">
+                    <div th:each="booking : ${model.bookings}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+
+                        <div class="btn d-flex flex-column border rounded p-3">
+                            <h2 th:text="${booking.name}">Номер бронирования</h2>
+                            <p th:text="'Дата: ' + ${booking.date}">Дата бронирования</p>
+                            <p th:text="'Цена: ' + ${booking.price}">Цена</p>
+                            <p th:text="'Отель: ' + ${booking.hotelName}">Отель</p>
+                            <p th:text="'Адрес: ' + ${booking.address}">Адрес</p>
+                            <p th:text="'ID комнаты: ' + ${booking.roomUUID}">ID комнаты</p>
+                            <p th:text="'Тип комнаты: ' + ${booking.roomType}">Тип комнаты</p>
+                            <p th:text="'User name: ' + ${booking.userName}">UserName пользователя</p>
+                            <p th:text="'ID бронирования: ' + ${booking.bookingUUID}">ID бронирования</p>
+                            <a class="btn btn-danger"
+                               th:href="@{/admin/cancelBooking/{bookingUUID}(bookingUUID=${booking.bookingUUID})}"
+                               onclick="return confirm('Вы уверены, что хотите отменить это бронирование?');">Отменить бронирование</a>
+                        </div>
+
+                    </div>
+
+                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"
+                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
+                                th:classappend="${pageNumber == adminForm.page} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/admin/getAdminAvailableBookings(page=${pageNumber}, size=${adminForm.size}, hotelName=${adminForm.hotelName})}"
+                                   th:text="${pageNumber}">1</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
 </body>
 </html>
