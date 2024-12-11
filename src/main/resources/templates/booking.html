@@ -20,22 +20,22 @@
                                type="text"
                                class="form-control"
                                id="country"
-                               placeholder="Введите название страны"/>
+                               placeholder="Страна"/>
                         <input th:field="*{city}"
                                type="text"
                                class="form-control"
                                id="city"
-                               placeholder="Введите название города"/>
+                               placeholder="Город"/>
                         <input th:field="*{start}"
                                type="date"
                                class="form-control"
                                id="start"
-                               placeholder="Выберите начальную дату"/>
+                               placeholder="Начальная дата"/>
                         <input th:field="*{end}"
                                type="date"
                                class="form-control"
                                id="end"
-                               placeholder="Выберите конечную дату"/>
+                               placeholder="Конечная дата"/>
                         <input type="hidden" th:field="*{page}" />
                         <input type="hidden" th:field="*{size}" />
                         <input type="hidden" th:field="*{rating}" />
@@ -52,7 +52,7 @@
                          class="d-flex flex-column bg-text mb-3 p-3 border rounded">
 
                         <a th:href="@{/bookings/hotelDetails(hotelName=${hotel.name}, hotelDescription=${hotel.description}, start=${bookingForm.start}, end=${bookingForm.end})}" class="btn d-flex flex-column border rounded">
-                            <h2 th:text="'Название: ' + ${hotel.name}">Название отеля</h2>
+                            <h2 th:text="'Отель: ' + ${hotel.name}">Название отеля</h2>
                             <h4 th:text="'Описание: ' + ${hotel.description}">Описание отеля</h4>
                             <h4 th:text="'Рейтинг: ' + ${hotel.rating}">Рейтинг отеля</h4>
                             <div class="text-center w-100">

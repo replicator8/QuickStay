@@ -62,7 +62,7 @@ public class Hotel extends BaseEntity {
         this.address = address;
     }
 
-    @Column(name = "photo", nullable = false)
+    @Column(name = "photo", nullable = false, length = 1023)
     public URL getPhoto() {
         return photo;
     }
