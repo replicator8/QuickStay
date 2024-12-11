@@ -8,7 +8,7 @@ import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import com.example.quickstay_contracts.input.BookingCreateInputModel;
+import com.example.quickstay_contracts.input.BookingPriceForm;
 import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BookingCreateInputModel createBooking(BookingCreateInputModel bookingDto) {
+    public BookingPriceForm createBooking(BookingPriceForm bookingDto) {
 
         int totalDays = (int) ChronoUnit.DAYS.between(bookingDto.getDateStart(), bookingDto.getDateEnd());
         for (int i = 0; i < totalDays; i++) {

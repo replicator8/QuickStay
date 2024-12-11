@@ -6,9 +6,8 @@ import com.example.demo.service.HotelService;
 import com.example.demo.service.RoomService;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.HotelController;
-import com.example.quickstay_contracts.input.BookingCreateInputModel;
+import com.example.quickstay_contracts.input.BookingPriceForm;
 import com.example.quickstay_contracts.viewmodel.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -67,7 +65,7 @@ public class HotelControllerImpl implements HotelController {
 
         model.addAttribute("hotelForm", form);
         model.addAttribute("model", viewModel);
-        model.addAttribute("hotelBookingForm", new BookingCreateInputModel());
+        model.addAttribute("hotelBookingForm", new BookingPriceForm());
         model.addAttribute("title", "Hotel");
 
         String hotelName = hotelService.findById(form.hotelUUID()).getName();
@@ -105,7 +103,7 @@ public class HotelControllerImpl implements HotelController {
     }
 
     @PostMapping("/createBooking/{roomUUID}")
-    public String createBooking(@PathVariable String roomUUID, @ModelAttribute("hotelBookingForm") BookingCreateInputModel form, BindingResult bindingResult, Model model, HttpSession session) {
+    public String createBooking(@PathVariable String roomUUID, @ModelAttribute("hotelBookingForm") BookingPriceForm form, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("hotelBookingForm", form);
 
@@ -118,8 +116,7 @@ public class HotelControllerImpl implements HotelController {
         LocalDate startLocalDate = (LocalDate) session.getAttribute("startLocalDate");
         LocalDate endLocalDate = (LocalDate) session.getAttribute("endLocalDate");
 
-        form = new BookingCreateInputModel(roomUUID, userUUID, startLocalDate, endLocalDate);
-        System.out.println(form);
+        form = new BookingPriceForm(roomUUID, userUUID, startLocalDate, endLocalDate);
         userService.createBooking(form);
 
         return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + form.getDateStart() + "&end=" + form.getDateEnd() + "&page=1&size=10&userUUID=" + form.getUserUUID();

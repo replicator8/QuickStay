@@ -53,13 +53,20 @@
                             <h4 th:text="'Тип комнаты: ' + ${room.type}">Тип комнаты</h4>
                             <h4 th:text="'Адрес: ' + ${room.address}">Адрес</h4>
                             <h4 th:text="'Цена: ' + ${room.price}">Цена</h4>
-                            <p th:text="${room.roomUUID}"></p>
                             <div class="text-center w-100">
                                 <img th:src="${room.photo}" alt="Room photo here" class="room-photo" style="width: 280px; height: 280px;">
                             </div>
                             <br>
                             <div class="text-center">
-                                <button class="btn btn-primary w-50">Забронировать</button>
+                                <form th:action="@{/price/createBooking/{roomUUID}(roomUUID=${room.roomUUID})}"
+                                      method="post"
+                                      th:object="${priceBookingForm}">
+                                    <input type="hidden" th:field="*{roomUUID}" th:value="${room.roomUUID}"/>
+                                    <input type="hidden" th:field="*{userUUID}" th:value="${#ctx.session.userUUID}"/>
+                                    <input type="hidden" th:field="*{dateStart}" th:value="${#ctx.session.startLocalDate}"/>
+                                    <input type="hidden" th:field="*{dateEnd}" th:value="${#ctx.session.endLocalDate}"/>
+                                    <button type="submit" class="btn btn-primary w-50">Забронировать</button>
+                                </form>
                             </div>
                         </div>
 
