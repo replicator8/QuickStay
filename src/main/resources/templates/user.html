@@ -25,6 +25,16 @@
 
                 <hr>
 
+                <form th:action="@{/users/getActiveBookings}"
+                      th:method="get"
+                      th:object="${userABForm}"
+                      class="m-md-auto w-80 pb-3">
+                    <div class="input-group">
+                        <input type="hidden" th:field="*{page}" />
+                        <input type="hidden" th:field="*{size}" />
+                    </div>
+                </form>
+
                 <div th:if="${#lists.isEmpty(model.bookings)}" class="alert alert-info">
                     Бронирования не найдены
                 </div>
@@ -69,9 +79,19 @@
                             <li class="page-item"
                                 th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
                                 th:classappend="${pageNumber == userABForm.page} ? 'active'">
-                                <a class="page-link"
-                                   th:href="@{/users/getActiveBookings(page=${pageNumber}, size=${userABForm.size}, userUUID=${userABForm.userUUID})}"
-                                   th:text="${pageNumber}">1</a>
+
+                                <div th:if="${not isArchive}">
+                                    <a class="page-link"
+                                    th:href="@{/users/getActiveBookings(page=${pageNumber}, size=${userABForm.size}, userUUID=${userABForm.userUUID})}"
+                                    th:text="${pageNumber}">1</a>
+                                </div>
+
+                                <div th:if="${isArchive}">
+                                    <a class="page-link"
+                                       th:href="@{/users/getArchiveBookings(page=${pageNumber}, size=${userABForm.size}, userUUID=${userABForm.userUUID})}"
+                                       th:text="${pageNumber}">1</a>
+                                </div>
+
                             </li>
                         </ul>
                     </nav>

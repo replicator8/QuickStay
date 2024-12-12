@@ -42,7 +42,7 @@ public class UserControllerImpl implements UserController {
     public String getActiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session) {
         var userUUID = form.userUUID() != null ? form.userUUID() : (String) session.getAttribute("userUUID");
         var page = form.page() != null ? form.page() : 1;
-        var size = form.size() != null ? form.size() : 10;
+        var size = form.size() != null ? form.size() : 30;
         form = new UserBookingsForm(userUUID, page, size);
 
         Page<UserActiveBookingsViewModel> bookings = userService.getActiveBookings(form);

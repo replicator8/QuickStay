@@ -24,6 +24,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -122,19 +123,14 @@ public class UserServiceImpl implements UserService {
 
         Page<Booking> bookings = getUserBookings(model.userUUID(), pageable);
 
-        Iterator<Booking> iterator = bookings.iterator();
-
-        while (iterator.hasNext()) {
-            Booking booking = iterator.next();
-            if (!booking.getDateStart().isAfter(LocalDate.now())) {
-                iterator.remove();
-            }
-        }
+        List<Booking> filteredBookings = bookings.getContent().stream()
+                .filter(booking -> !booking.getDateStart().isBefore(LocalDate.now()))
+                .toList();
 
         List<UserActiveBookingsViewModel> userBookings = new ArrayList<>();
 
         int cnt = 1;
-        for (Booking booking : bookings) {
+        for (Booking booking : filteredBookings) {
             String title = "Бронирование " + cnt;
             String price = booking.getPrice() + " руб.";
             String date = booking.getDateStart().getDayOfMonth() + " " +
@@ -151,7 +147,7 @@ public class UserServiceImpl implements UserService {
             cnt++;
         }
 
-        return new PageImpl<>(userBookings, pageable, bookings.getTotalElements());
+        return new PageImpl<>(userBookings, pageable, filteredBookings.size());
     }
 
     @Override
@@ -189,7 +185,7 @@ public class UserServiceImpl implements UserService {
             cnt++;
         }
 
-        return new PageImpl<>(userBookings, pageable, bookings.getTotalElements());
+        return new PageImpl<>(userBookings, pageable, userBookings.size());
     }
 
     @Override
