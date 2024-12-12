@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserControllerImpl implements UserController {
     private UserService userService;
@@ -38,17 +38,14 @@ public class UserControllerImpl implements UserController {
     @GetMapping("/getActiveBookings/{userUUID}")
     public List<UserActiveBookingsViewModel> getActiveBookings(@PathVariable String userUUID) {
         List<UserActiveBookingsViewModel> bookings = userService.getActiveBookings(userUUID);
-        // TODO: display bookings
 
         return bookings;
     }
 
-    // MARK: check soon
     @Override
     @GetMapping("/getArchiveBookings/{userUUID}")
     public List<UserArchiveBookingsViewModel> getArchiveBookings(@PathVariable String userUUID) {
         List<UserArchiveBookingsViewModel> bookings = userService.getArchiveBookings(userUUID);
-        // TODO: display bookings
 
         return bookings;
     }

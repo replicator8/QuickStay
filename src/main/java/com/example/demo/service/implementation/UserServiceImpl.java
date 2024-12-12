@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -117,22 +114,31 @@ public class UserServiceImpl implements UserService {
     public List<UserActiveBookingsViewModel> getActiveBookings(String userUUID) {
         List<Booking> bookings = getUserBookings(userUUID);
 
-        for(Booking booking: bookings) {
+        Iterator<Booking> iterator = bookings.iterator();
+
+        while (iterator.hasNext()) {
+            Booking booking = iterator.next();
             if (!booking.getDateStart().isAfter(LocalDate.now())) {
-                bookings.remove(booking);
+                iterator.remove();
             }
         }
 
         List<UserActiveBookingsViewModel> userBookings = new ArrayList<>(bookings.size());
 
         int cnt = 1;
-        for (Booking booking: bookings) {
+        for (Booking booking : bookings) {
             String title = "Бронирование " + cnt;
-            String description = booking.getDateStart().getDayOfMonth() + " " + booking.getDateStart().getMonth() + " - " + booking.getDateEnd().getDayOfMonth() + " " + booking.getDateEnd().getMonth() + " for: " + booking.getPrice() + " RUB.";
+            String price = booking.getPrice() + " руб.";
+            String date = booking.getDateStart().getDayOfMonth() + " " +
+                    booking.getDateStart().getMonth() + " - " +
+                    booking.getDateEnd().getDayOfMonth() + " " +
+                    booking.getDateEnd().getMonth();
             URL photo = booking.getRoom().getPhoto();
+            String hotelName = booking.getRoom().getHotel().getName();
+            String address = booking.getRoom().getHotel().getAddress().getFullAddress();
 
             userBookings.add(new UserActiveBookingsViewModel(
-                    booking.getId(), title, description, photo
+                    booking.getId(), title, date, price, hotelName, address, photo
             ));
             cnt++;
         }
@@ -143,9 +149,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserArchiveBookingsViewModel> getArchiveBookings(String userUUID) {
         List<Booking> bookings = getUserBookings(userUUID);
-        for(Booking booking: bookings) {
+
+        Iterator<Booking> iterator = bookings.iterator();
+
+        while (iterator.hasNext()) {
+            Booking booking = iterator.next();
             if (!booking.getDateStart().isBefore(LocalDate.now())) {
-                bookings.remove(booking);
+                iterator.remove();
             }
         }
 
@@ -154,11 +164,17 @@ public class UserServiceImpl implements UserService {
         int cnt = 1;
         for (Booking booking: bookings) {
             String title = "Бронирование " + cnt;
-            String description = booking.getDateStart().getDayOfMonth() + " " + booking.getDateStart().getMonth() + " - " + booking.getDateEnd().getDayOfMonth() + " " + booking.getDateEnd().getMonth() + " for: " + booking.getPrice();
+            String price = booking.getPrice() + " руб.";
+            String date = booking.getDateStart().getDayOfMonth() + " " +
+                    booking.getDateStart().getMonth() + " - " +
+                    booking.getDateEnd().getDayOfMonth() + " " +
+                    booking.getDateEnd().getMonth();
             URL photo = booking.getRoom().getPhoto();
+            String hotelName = booking.getRoom().getHotel().getName();
+            String address = booking.getRoom().getHotel().getAddress().getFullAddress();
 
             userBookings.add(new UserArchiveBookingsViewModel(
-                    booking.getId(), title, description, photo
+                    booking.getId(), title, date, price, hotelName, address, photo
             ));
             cnt++;
         }
