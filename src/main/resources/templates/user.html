@@ -1,62 +1,57 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head th:replace="fragments/head"></head>-->
-<!--<div th:replace="fragments/navbar">Navbar</div>-->
-<!--<body class="d-flex flex-column h-100">-->
-<!--<main class="flex-shrink-0">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-2"></div>-->
-<!--            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">-->
-<!--                <h1 th:text="${#ctx.session.hotelName}">User name</h1>-->
-<!--                <p th:text="10000">Баланс</p>-->
-<!--                <p th:text="'У вас 3 активных бронирования'">Даты проживания</p>-->
-<!--                <hr>-->
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<div th:replace="fragments/navbar">Navbar</div>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <h1 th:text="${#ctx.session.userName} + ', ' + ${#ctx.session.userAge} + ' лет'">User name</h1>
+                <h5 th:text="'Ваш баланс: ' + ${#ctx.session.userBalance} + ' руб.'">Баланс</h5>
+                <h5 th:text="'У вас ' + ${#lists.size(model.bookings)} + ' активных бронирования'">Даты проживания</h5>
+                <a class="btn btn-danger align-bottom"
+                   href="">Выйти из профиля</a>
+                <hr>
 
-<!--                <div th:if="${#lists.isEmpty(model.bookings)}" class="alert alert-info">-->
-<!--                    Бронирования не найдены-->
-<!--                </div>-->
+                <div th:if="${#lists.isEmpty(model.bookings)}" class="alert alert-info">
+                    Бронирования не найдены
+                </div>
 
-<!--                <div th:if="${not #lists.isEmpty(model.bookings)}">-->
-<!--                    <div th:each="booking : ${model.bookings}"-->
-<!--                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">-->
-<!--                        <h2 th:text="${room.type} + ' номер'">Тип номера</h2>-->
-<!--                        <p th:text="${room.description}">Описание номера</p>-->
-<!--                        <h4 th:text="'Цена: ' + ${room.price} + ' руб.'">Цена</h4>-->
-<!--                        <div class="text-center w-100">-->
-<!--                            <img th:src="${room.photo}" alt="Room photo here" class="room-photo" style="width: 280px; height: 280px;">-->
-<!--                        </div>-->
-<!--                        <br>-->
-<!--                        <div class="text-center">-->
-<!--                            <form th:action="@{/hotel/createBooking/{roomUUID}(roomUUID=${room.roomUUID})}"-->
-<!--                                  method="post"-->
-<!--                                  th:object="${hotelBookingForm}">-->
-<!--                                <input type="hidden" th:field="*{roomUUID}" th:value="${room.roomUUID}"/>-->
-<!--                                <input type="hidden" th:field="*{userUUID}" th:value="${#ctx.session.userUUID}"/>-->
-<!--                                <input type="hidden" th:field="*{dateStart}" th:value="${#ctx.session.startLocalDate}"/>-->
-<!--                                <input type="hidden" th:field="*{dateEnd}" th:value="${#ctx.session.endLocalDate}"/>-->
-<!--                                <button type="submit" class="btn btn-primary w-40">Забронировать</button>-->
-<!--                            </form>-->
-<!--                        </div>-->
+                <div th:if="${not #lists.isEmpty(model.bookings)}">
+                    <div th:each="booking : ${model.bookings}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+                        <h2 th:text="${booking.title}">Номер бронирования</h2>
+                        <p th:text="${booking.date}">Дата бронирования</p>
+                        <p th:text="'Цена: ' + ${booking.price} + ' руб.'">Цена</p>
+                        <p th:text="'Отель: ' + ${booking.hotelName}">Отель</p>
+                        <p th:text="'Адрес: ' + ${booking.address}">Адрес</p>
+                        <div class="text-center w-100">
+                            <img th:src="${booking.photo}" alt="Booking photo here" class="booking-photo" style="width: 280px; height: 280px;">
+                        </div>
+                        <br>
+                        <a class="btn btn-danger align-bottom"
+                           th:href="@{/users/cancelBooking/{bookingUUID}(bookingUUID=${booking.uuid})}">Отменить бронирование</a>
 
-<!--                    </div>-->
+                    </div>
 
-<!--                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">-->
-<!--                        <ul class="pagination justify-content-center">-->
-<!--                            <li class="page-item"-->
-<!--                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"-->
-<!--                                th:classappend="${pageNumber == hotelForm.page} ? 'active'">-->
-<!--                                <a class="page-link"-->
-<!--                                   th:href="@{/hotel/getRoomsByDate(page=${pageNumber}, size=${hotelForm.size}, hotelUUID=${hotelForm.hotelUUID}, start=${hotelForm.start}, end=${hotelForm.end}, userUUID=${hotelForm.userUUID})}"-->
-<!--                                   th:text="${pageNumber}">1</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </nav>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</main>-->
-<!--<footer th:replace="fragments/footer"/>-->
-<!--</body>-->
-<!--</html>-->
+                    <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"
+                                th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
+                                th:classappend="${pageNumber == userABForm.page} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/users/getActiveBookings(page=${pageNumber}, size=${userABForm.size}, userUUID=${userABForm.userUUID})}"
+                                   th:text="${pageNumber}">1</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

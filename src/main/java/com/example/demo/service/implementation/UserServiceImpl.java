@@ -9,13 +9,17 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.input.BookingPriceForm;
+import com.example.quickstay_contracts.input.UserBookingsForm;
 import com.example.quickstay_contracts.viewmodel.UserActiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -95,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteBooking(String userId, String roomId, LocalDate startDate, LocalDate endDate) {
-        List<Booking> bookings = getUserBookings(userId);
+        List<Booking> bookings = bookingRepository.getUserBooking(userId);
         for (Booking booking: bookings) {
             if (Objects.equals(booking.getRoom().getId(), roomId) && booking.getDateStart() == startDate && booking.getDateEnd() == endDate) {
                 bookingRepository.delete(booking);
@@ -105,14 +109,18 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
+
     @Override
-    public List<Booking> getUserBookings(String userId) {
-        return bookingRepository.getUserBookings(userId);
+    public Page<Booking> getUserBookings(String userId, Pageable pageable) {
+        return bookingRepository.getUserBookings(userId, pageable);
     }
 
     @Override
-    public List<UserActiveBookingsViewModel> getActiveBookings(String userUUID) {
-        List<Booking> bookings = getUserBookings(userUUID);
+    public Page<UserActiveBookingsViewModel> getActiveBookings(UserBookingsForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
+
+        Page<Booking> bookings = getUserBookings(model.userUUID(), pageable);
 
         Iterator<Booking> iterator = bookings.iterator();
 
@@ -123,7 +131,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        List<UserActiveBookingsViewModel> userBookings = new ArrayList<>(bookings.size());
+        List<UserActiveBookingsViewModel> userBookings = new ArrayList<>();
 
         int cnt = 1;
         for (Booking booking : bookings) {
@@ -143,12 +151,14 @@ public class UserServiceImpl implements UserService {
             cnt++;
         }
 
-        return userBookings;
+        return new PageImpl<>(userBookings, pageable, bookings.getTotalElements());
     }
 
     @Override
-    public List<UserArchiveBookingsViewModel> getArchiveBookings(String userUUID) {
-        List<Booking> bookings = getUserBookings(userUUID);
+    public Page<UserArchiveBookingsViewModel> getArchiveBookings(UserBookingsForm model) {
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
+
+        Page<Booking> bookings = getUserBookings(model.userUUID(), pageable);
 
         Iterator<Booking> iterator = bookings.iterator();
 
@@ -159,7 +169,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        List<UserArchiveBookingsViewModel> userBookings = new ArrayList<>(bookings.size());
+        List<UserArchiveBookingsViewModel> userBookings = new ArrayList<>();
 
         int cnt = 1;
         for (Booking booking: bookings) {
@@ -179,7 +189,7 @@ public class UserServiceImpl implements UserService {
             cnt++;
         }
 
-        return userBookings;
+        return new PageImpl<>(userBookings, pageable, bookings.getTotalElements());
     }
 
     @Override

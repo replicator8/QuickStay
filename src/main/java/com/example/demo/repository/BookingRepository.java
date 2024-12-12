@@ -32,7 +32,9 @@ public interface BookingRepository extends JpaRepository<Booking, String> {
     @Query("select case when count(b) > 0 THEN false ELSE true END from Booking b where b.room.id = :roomId and ((:endDate > b.dateStart and :startDate < b.dateEnd))")
     boolean checkAvailabilityForDates(@Param("roomId") String roomId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     @Query("select b from Booking b where b.user.id = :userId")
-    List<Booking> getUserBookings(@Param(value = "userId") String userId);
+    Page<Booking> getUserBookings(@Param(value = "userId") String userId, Pageable pageable);
+    @Query("select b from Booking b where b.user.id = :userId")
+    List<Booking> getUserBooking(@Param(value = "userId") String userId);
     @Query("select b from Booking b")
     Page<Booking> getAllBookings(Pageable pageable);
     @Query("select b from Booking b join Room r on b.room.id = r.id where r.hotel.name = :hotelName")
