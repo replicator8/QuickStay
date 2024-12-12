@@ -91,7 +91,7 @@ public class RoomServiceImpl implements RoomService {
                     room.getHotel().getName(),
                     room.getRoomType().getRus(),
                     room.getHotel().getAddress().getFullAddress(),
-                    room.getPrice() * totalDays,
+                    Double.parseDouble(String.format("%.2f", room.getPrice() * totalDays)),
                     room.getPhoto()
                     ));
         }

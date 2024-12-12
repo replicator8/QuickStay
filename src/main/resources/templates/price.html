@@ -52,7 +52,7 @@
                             <h2 th:text="'Отель: ' + ${room.hotelName}">Название отеля</h2>
                             <h4 th:text="'Тип комнаты: ' + ${room.type}">Тип комнаты</h4>
                             <h4 th:text="'Адрес: ' + ${room.address}">Адрес</h4>
-                            <h4 th:text="'Цена: ' + ${room.price}">Цена</h4>
+                            <h4 th:text="'Цена: ' + ${room.price} + ' руб.'">Цена</h4>
                             <div class="text-center w-100">
                                 <img th:src="${room.photo}" alt="Room photo here" class="room-photo" style="width: 280px; height: 280px;">
                             </div>

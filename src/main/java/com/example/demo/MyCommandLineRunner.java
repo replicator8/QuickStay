@@ -19,7 +19,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
 
     Faker fakerRus = new Faker(new Locale("ru"));
     Faker fakerUSA = new Faker(new Locale("en-US"));

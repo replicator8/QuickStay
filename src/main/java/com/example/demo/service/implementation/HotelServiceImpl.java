@@ -102,7 +102,7 @@ public class HotelServiceImpl implements HotelService {
                         room.getId(),
                         room.getRoomType().getRus(),
                         room.getDescription(),
-                        room.getPrice() * totalDays,
+                        Double.parseDouble(String.format("%.2f", room.getPrice() * totalDays)),
                         room.getPhoto()
                 ))
                 .toList();
