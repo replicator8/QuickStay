@@ -98,6 +98,13 @@ public class UserControllerImpl implements UserController {
         return "redirect:/users/getArchiveBookings";
     }
 
+    @GetMapping("/logout")
+    public String logOut(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/login/";
+    }
+
     @GetMapping("/getAll")
     List<User> getUsers() {
         return userService.findAll();
