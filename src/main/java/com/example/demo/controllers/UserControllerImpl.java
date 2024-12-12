@@ -66,6 +66,7 @@ public class UserControllerImpl implements UserController {
         session.setAttribute("userAge", userAge);
 
         model.addAttribute("userABForm", form);
+        model.addAttribute("isArchive", false);
         model.addAttribute("model", viewModel);
         model.addAttribute("title", "User profile");
 
@@ -75,8 +76,35 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/getArchiveBookings")
     public String getArchiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session) {
+        var userUUID = form.userUUID() != null ? form.userUUID() : (String) session.getAttribute("userUUID");
+        var page = form.page() != null ? form.page() : 1;
+        var size = form.size() != null ? form.size() : 10;
+        form = new UserBookingsForm(userUUID, page, size);
 
         Page<UserArchiveBookingsViewModel> bookings = userService.getArchiveBookings(form);
+
+        var bookingViewModels = bookings.stream()
+                .map(booking -> new UserActiveBookingsViewModel(booking.uuid(), booking.title(), booking.date(), booking.price(), booking.hotelName(), booking.address(), booking.photo()))
+                .toList();
+
+        var viewModel = new UserActiveBookingsListViewModel(
+                bookingViewModels,
+                bookings.getTotalPages()
+        );
+
+        User user = getUser(userUUID);
+        Double balance = user.getBalance();
+        String userName = user.getUserName();
+        int userAge = user.getAge();
+
+        session.setAttribute("userBalance", balance);
+        session.setAttribute("userName", userName);
+        session.setAttribute("userAge", userAge);
+
+        model.addAttribute("userABForm", form);
+        model.addAttribute("model", viewModel);
+        model.addAttribute("isArchive", true);
+        model.addAttribute("title", "User profile");
 
         return "user";
     }
@@ -90,8 +118,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @GetMapping("/rateBooking/{bookingUUID}/{rating}")
-    public String rateBooking(@PathVariable String bookingUUID, @PathVariable double rating) {
+    @GetMapping("/rateBooking/{bookingUUID}")
+    public String rateBooking(@PathVariable String bookingUUID, @RequestParam double rating) {
         String hotelUUID = bookingService.findById(bookingUUID).getRoom().getHotel().getId();
         hotelService.updateRating(hotelUUID, rating);
 

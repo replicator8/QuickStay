@@ -10,9 +10,19 @@
             <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
                 <h1 th:text="${#ctx.session.userName} + ', ' + ${#ctx.session.userAge} + ' лет'">User name</h1>
                 <h5 th:text="'Ваш баланс: ' + ${#ctx.session.userBalance} + ' руб.'">Баланс</h5>
-                <h5 th:text="'У вас ' + ${#lists.size(model.bookings)} + ' активных бронирования'">Даты проживания</h5>
+                <div th:if="${not isArchive}">
+                    <h5 th:text="'У вас ' + ${#lists.size(model.bookings)} + ' активных бронирования'">Количество бронирований</h5>
+                </div>
+                <div th:if="${isArchive}">
+                    <h5 th:text="'У вас ' + ${#lists.size(model.bookings)} + ' архивных бронирования'">Количество бронирований</h5>
+                </div>
+                <a class="btn btn-primary align-bottom"
+                   th:href="@{/users/getActiveBookings}">Получить активные бронирования</a>
+                <a class="btn btn-primary align-bottom"
+                   th:href="@{/users/getArchiveBookings}">Получить архивные бронирования</a>
                 <a class="btn btn-danger align-bottom"
                    th:href="@{/users/logout}">Выйти из профиля</a>
+
                 <hr>
 
                 <div th:if="${#lists.isEmpty(model.bookings)}" class="alert alert-info">
@@ -31,8 +41,26 @@
                             <img th:src="${booking.photo}" alt="Booking photo here" class="booking-photo" style="width: 280px; height: 280px;">
                         </div>
                         <br>
-                        <a class="btn btn-danger align-bottom"
-                           th:href="@{/users/cancelBooking/{bookingUUID}(bookingUUID=${booking.uuid})}">Отменить бронирование</a>
+
+                        <div th:if="${isArchive}">
+                            <form th:action=" @{/users/rateBooking/{bookingUUID}(bookingUUID=${booking.uuid})}"
+                                  th:method="get">
+                                <div class="input-group">
+                                    <input type="number"
+                                           name="rating"
+                                           class="form-control"
+                                           min="1"
+                                           max="5"
+                                           placeholder="Оцените от 1 до 5">
+                                    <button class="btn btn-primary" type="submit">Оценить</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div th:if="${not isArchive}">
+                            <a class="btn btn-danger"
+                               th:href="@{/users/cancelBooking/{bookingUUID}(bookingUUID=${booking.uuid})}">Отменить бронирование</a>
+                        </div>
 
                     </div>
 
