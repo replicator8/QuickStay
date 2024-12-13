@@ -6,6 +6,8 @@ import com.example.quickstay_contracts.controllers.BookingController;
 import com.example.quickstay_contracts.viewmodel.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/bookings")
+@EnableCaching
 public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;
     private HotelService hotelService;
@@ -31,6 +34,7 @@ public class BookingControllerImpl implements BookingController {
 
     @Override
     @GetMapping("/getHotels")
+    @Cacheable(value = "hotels")
     public String getHotels(@ModelAttribute("bookingForm") BookingForm form, Model model) {
         var country = form.country() != null ? form.country() : "Россия";
         var city = form.city() != null ? form.city() : "";
