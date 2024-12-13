@@ -11,12 +11,10 @@ import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.input.AdminBookingForm;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import com.example.quickstay_contracts.viewmodel.BookingForm;
-import com.example.quickstay_contracts.viewmodel.BookingFilterForm;
 import com.example.quickstay_contracts.viewmodel.HotelViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +65,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Page<HotelViewModel> getHotels(BookingForm model) {
-        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
+        Pageable pageable;
+
+        if (model.filter().equals("true")) {
+            pageable = PageRequest.of(model.page() - 1, model.size(), Sort.by(Sort.Direction.DESC,"rating"));
+        } else {
+            pageable = PageRequest.of(model.page() - 1, model.size());
+        }
+
         String country = model.country();
         String city = model.city();
         double rating = model.rating();
@@ -88,23 +93,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Page<HotelViewModel> getHotelsWithFilter(BookingForm model) {
-        Pageable pageable = PageRequest.of(model.page() - 1, model.size(), Sort.by(Sort.Direction.DESC,"rating"));
-        String country = model.country();
-        String city = model.city();
-        double rating = model.rating();
-
-        if (city.isEmpty()) {
-            Page<Hotel> hotels = hotelRepository.getAllHotels(pageable);
-            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
-        }
-
-        if (rating != 0.0) {
-            Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCityFilter(country, city, rating, pageable);
-            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
-        }
-        Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCity(country, city, pageable);
-
-        return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        return null;
     }
 
     @Override

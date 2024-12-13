@@ -37,10 +37,15 @@
                                class="form-control"
                                id="end"
                                placeholder="Конечная дата"/>
+                        <input th:field="*{filter}"
+                               type="hidden"
+                               class="form-control"
+                               id="filter"/>
                         <input type="hidden" th:field="*{page}" />
                         <input type="hidden" th:field="*{size}" />
                         <input type="hidden" th:field="*{rating}" />
-                        <button type="submit" class="btn btn-primary">Поиск</button>
+                        <button type="submit" class="btn btn-primary border border-whit" onclick="disableFilter()">Поиск</button>
+                        <button type="submit" class="btn btn-primary border border-whit" onclick="setFilter()">Сортировать по рейтингу</button>
                     </div>
                 </form>
 
@@ -69,7 +74,7 @@
                                 th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
                                 th:classappend="${pageNumber == bookingForm.page} ? 'active'">
                                 <a class="page-link"
-                                   th:href="@{/bookings/getHotels(page=${pageNumber}, size=${bookingForm.size}, country=${bookingForm.country}, city=${bookingForm.city}, start=${bookingForm.start}, end=${bookingForm.end}, rating=${bookingForm.rating})}"
+                                   th:href="@{/bookings/getHotels(page=${pageNumber}, size=${bookingForm.size}, country=${bookingForm.country}, city=${bookingForm.city}, start=${bookingForm.start}, end=${bookingForm.end}, rating=${bookingForm.rating}, filter=${bookingForm.filter})}"
                                    th:text="${pageNumber}">1</a>
                             </li>
                         </ul>
@@ -78,6 +83,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function setFilter() {
+            document.getElementById('filter').value = true;
+            document.querySelector('form').submit();
+        }
+    </script>
+
+    <script>
+        function disableFilter() {
+            document.getElementById('filter').value = false;
+            document.querySelector('form').submit();
+        }
+    </script>
 </main>
 <footer th:replace="fragments/footer"/>
 </body>
