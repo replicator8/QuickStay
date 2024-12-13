@@ -70,8 +70,15 @@ public class PriceControllerImpl implements PriceController {
         String userUUID = (String) session.getAttribute("userUUID");
         LocalDate startLocalDate = (LocalDate) session.getAttribute("startLocalDate");
         LocalDate endLocalDate = (LocalDate) session.getAttribute("endLocalDate");
+        double balance = userService.getBalanceById(userUUID);
+        double totalPrice = roomService.findById(roomUUID).getPrice();
 
         form = new BookingPriceForm(roomUUID, userUUID, startLocalDate, endLocalDate);
+
+        if (balance < totalPrice) {
+            session.setAttribute("badMessage", "У вас недостаточно средств!");
+            return "redirect:/price/getRooms";
+        }
 
         session.setAttribute("successMessage", "Вы успешно забронировали номер!");
 

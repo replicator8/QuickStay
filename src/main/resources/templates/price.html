@@ -41,6 +41,10 @@
                     </div>
                 </form>
 
+                <div th:if="${#ctx.session.badMessage}" class="alert alert-danger text-center">
+                    <span th:text="${#ctx.session.badMessage}"></span>
+                </div>
+
                 <div th:if="${#ctx.session.successMessage}" class="alert alert-success text-center">
                     <span th:text="${#ctx.session.successMessage}"></span>
                 </div>
