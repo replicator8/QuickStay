@@ -64,6 +64,7 @@ public class UserControllerImpl implements UserController {
         session.setAttribute("userBalance", balance);
         session.setAttribute("userName", userName);
         session.setAttribute("userAge", userAge);
+        session.removeAttribute("successMessage");
 
         model.addAttribute("userABForm", form);
         model.addAttribute("isArchive", false);

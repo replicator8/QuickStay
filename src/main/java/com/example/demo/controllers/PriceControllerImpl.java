@@ -72,13 +72,9 @@ public class PriceControllerImpl implements PriceController {
         LocalDate startLocalDate = (LocalDate) session.getAttribute("startLocalDate");
         LocalDate endLocalDate = (LocalDate) session.getAttribute("endLocalDate");
 
-        System.out.println("USER UUID: " + userUUID);
-        System.out.println("ROOM UUID: " + roomUUID);
-        System.out.println("START:: " + startLocalDate);
-        System.out.println("END: " + endLocalDate);
-
-
         form = new BookingPriceForm(roomUUID, userUUID, startLocalDate, endLocalDate);
+
+        session.setAttribute("successMessage", "Вы успешно забронировали номер!");
 
         userService.createBooking(form);
 

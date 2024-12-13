@@ -41,6 +41,10 @@
                     </div>
                 </form>
 
+                <div th:if="${#ctx.session.successMessage}" class="alert alert-success text-center">
+                    <span th:text="${#ctx.session.successMessage}"></span>
+                </div>
+
                 <div th:if="${#lists.isEmpty(model.rooms)}" class="alert alert-info">
                     Отели не найдены
                 </div>

@@ -67,11 +67,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Page<HotelViewModel> getHotels(BookingForm model) {
-        Pageable pageable = PageRequest.of(model.page() - 1, model.size(), Sort.by(Sort.Direction.DESC,"rating"));
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size());
         String country = model.country();
         String city = model.city();
         double rating = model.rating();
-        // TODO: session storage save data's
 
         if (city.isEmpty()) {
             Page<Hotel> hotels = hotelRepository.getAllHotels(pageable);
@@ -89,8 +88,23 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Page<HotelViewModel> getHotelsWithFilter(BookingForm model) {
-        Page<HotelViewModel> hotels = getHotels(model);
-        return hotels;
+        Pageable pageable = PageRequest.of(model.page() - 1, model.size(), Sort.by(Sort.Direction.DESC,"rating"));
+        String country = model.country();
+        String city = model.city();
+        double rating = model.rating();
+
+        if (city.isEmpty()) {
+            Page<Hotel> hotels = hotelRepository.getAllHotels(pageable);
+            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        }
+
+        if (rating != 0.0) {
+            Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCityFilter(country, city, rating, pageable);
+            return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
+        }
+        Page<Hotel> hotels = hotelRepository.getHotelByCountryAndCity(country, city, pageable);
+
+        return hotels.map(hotel -> new HotelViewModel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getRating(), hotel.getPhoto()));
     }
 
     @Override
