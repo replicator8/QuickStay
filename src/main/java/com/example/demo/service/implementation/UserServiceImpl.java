@@ -84,9 +84,11 @@ public class UserServiceImpl implements UserService {
         Room room = roomRepository.findById(bookingDto.getRoomUUID()).get();
         User user = userRepository.findById(bookingDto.getUserUUID()).get();
         double totalPrice = Double.parseDouble(String.format("%.2f", roomRepository.getPriceByRoomId(bookingDto.getRoomUUID()) * totalDays));
+        user.setBalance(user.getBalance() - totalPrice);
         Booking booking = new Booking(room, user, bookingDto.getDateStart(), bookingDto.getDateEnd(), totalPrice, totalDays);
 
         bookingRepository.save(booking);
+        userRepository.save(user);
         return bookingDto;
     }
 

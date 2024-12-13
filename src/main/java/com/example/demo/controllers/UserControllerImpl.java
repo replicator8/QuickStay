@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domain.Booking;
 import com.example.demo.domain.User;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.HotelService;
@@ -113,6 +114,11 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/cancelBooking/{bookingUUID}")
     public String cancelBooking(@PathVariable String bookingUUID) {
+        Booking booking = bookingService.findById(bookingUUID);
+        User user = booking.getUser();
+        double price = booking.getPrice();
+        user.setBalance(user.getBalance() + price);
+
         bookingService.deleteBooking(bookingUUID);
 
         return "redirect:/users/getActiveBookings";

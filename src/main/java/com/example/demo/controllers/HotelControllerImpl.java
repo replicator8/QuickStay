@@ -94,10 +94,19 @@ public class HotelControllerImpl implements HotelController {
         String hotelUUID = roomService.findById(roomUUID).getHotel().getId();
 
         String userUUID = (String) session.getAttribute("userUUID");
+        double balance = userService.getBalanceById(userUUID);
+        double totalPrice = roomService.findById(roomUUID).getPrice();
+
         LocalDate startLocalDate = (LocalDate) session.getAttribute("startLocalDate");
         LocalDate endLocalDate = (LocalDate) session.getAttribute("endLocalDate");
 
         form = new BookingPriceForm(roomUUID, userUUID, startLocalDate, endLocalDate);
+
+        if (balance < totalPrice) {
+            session.setAttribute("badMessage", "У вас недостаточно средств!");
+            return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + form.getDateStart() + "&end=" + form.getDateEnd() + "&page=1&size=10&userUUID=" + form.getUserUUID();
+        }
+
         userService.createBooking(form);
 
         session.setAttribute("successMessage", "Вы успешно забронировали номер!");
