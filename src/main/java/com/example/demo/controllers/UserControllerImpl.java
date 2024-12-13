@@ -58,7 +58,7 @@ public class UserControllerImpl implements UserController {
         );
 
         User user = getUser(userUUID);
-        Double balance = user.getBalance();
+        Double balance = Double.parseDouble(String.format("%.2f", user.getBalance()));
         String userName = user.getUserName();
         int userAge = user.getAge();
 

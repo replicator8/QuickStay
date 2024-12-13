@@ -80,11 +80,6 @@ public class BookingControllerImpl implements BookingController {
 
     @GetMapping("/hotelDetails")
     public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        System.out.println("Selected hotel: " + hotelName);
-        System.out.println("Hotel description: " + hotelDescription);
-        System.out.println("Start date: " + start);
-        System.out.println("End date: " + end);
-
         String hotelUUID = hotelService.findByName(hotelName).getId();
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
