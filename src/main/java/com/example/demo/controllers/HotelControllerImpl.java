@@ -119,6 +119,8 @@ public class HotelControllerImpl implements HotelController {
         form = new BookingPriceForm(roomUUID, userUUID, startLocalDate, endLocalDate);
         userService.createBooking(form);
 
+        session.setAttribute("successMessage", "Вы успешно забронировали номер!");
+
         return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + form.getDateStart() + "&end=" + form.getDateEnd() + "&page=1&size=10&userUUID=" + form.getUserUUID();
     }
 

@@ -110,6 +110,7 @@ public class BookingControllerImpl implements BookingController {
 
         session.setAttribute("startDate", startRes);
         session.setAttribute("endDate", endRes);
+        session.removeAttribute("successMessage");
 
         redirectAttributes.addFlashAttribute("startLocalDate", startDate);
         redirectAttributes.addFlashAttribute("endLocalDate", endDate);

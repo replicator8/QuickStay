@@ -13,6 +13,10 @@
                     <p th:text="'С ' + ${#ctx.session.startDate} + ' по ' + ${#ctx.session.endDate}">Даты проживания</p>
                     <hr>
 
+                    <div th:if="${#ctx.session.successMessage}" class="alert alert-success text-center">
+                        <span th:text="${#ctx.session.successMessage}"></span>
+                    </div>
+
                     <div th:if="${#lists.isEmpty(model.rooms)}" class="alert alert-info">
                         Номера не найдены
                     </div>
@@ -35,7 +39,7 @@
                                     <input type="hidden" th:field="*{userUUID}" th:value="${#ctx.session.userUUID}"/>
                                     <input type="hidden" th:field="*{dateStart}" th:value="${#ctx.session.startLocalDate}"/>
                                     <input type="hidden" th:field="*{dateEnd}" th:value="${#ctx.session.endLocalDate}"/>
-                                    <button type="submit" class="btn btn-primary w-40">Забронировать</button>
+                                    <button type="submit" class="btn btn-primary w-40" >Забронировать</button>
                                 </form>
                             </div>
 
