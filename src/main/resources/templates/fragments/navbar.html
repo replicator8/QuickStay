@@ -1,16 +1,16 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg bg-light" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-item nav-link text-dark" href="/bookings/getHotels">Главная</a>
+                <a class="nav-item nav-link text-dark" sec:authorize="isAuthenticated()" href="/bookings/getHotels">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-item nav-link text-dark" href="/price/getRooms">Подбор отелей по цене</a>
+                <a class="nav-item nav-link text-dark" sec:authorize="isAuthenticated()" href="/price/getRooms">Подбор отелей по цене</a>
             </li>
             <li class="nav-item">
-                <a class="nav-item nav-link text-dark" href="/users/getActiveBookings">Личный кабинет</a>
+                <a class="nav-item nav-link text-dark" sec:authorize="isAuthenticated()" href="/users/getActiveBookings">Личный кабинет</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-item nav-link text-dark" href="/admin/getAdminAvailableBookings">Админ-панель</a>
             </li>
         </ul>

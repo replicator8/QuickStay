@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
-                <h1 th:text="${#ctx.session.userUUID}" >Admin Principles</h1>
+                <h1 th:text="${#ctx.session.adminName}" >Admin User name</h1>
                 <h2>Все бронирования</h2>
                 <hr>
                 <form th:action="@{/admin/getAdminAvailableBookings}"

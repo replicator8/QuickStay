@@ -1,8 +1,8 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -13,10 +13,15 @@ public class User extends BaseEntity {
     private String password;
     private int age;
     private double balance;
+    private List<Role> roles;
 
-    protected User() {}
+    public User() {
+        this.roles = new ArrayList<>();
+    }
 
     public User(String firstName, String lastName, String userName, String password, int age, double balance) {
+        this();
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -77,6 +82,15 @@ public class User extends BaseEntity {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

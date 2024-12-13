@@ -10,38 +10,29 @@
         <div class="justify-content-center">
           <h1>Вход</h1>
         </div>
-        <form th:action="@{/login/auth}"
+        <form th:action="@{/login/}"
               th:method="post"
-              th:object="${loginForm}"
               class="m-md-auto w-50 pb-3">
 
           <div class="mb-3">
-            <label class="form-label" for="userName">User Name</label>
-            <input th:field="*{userName}"
-                   th:errorclass="is-invalid"
+            <label class="form-label" for="username">User Name</label>
+            <input th:value="${username}"
                    type="text"
+                   name="username"
                    class="form-control text-center"
-                   id="userName"/>
-            <small th:if="${#fields.hasErrors('userName')}"
-                   th:errors="*{userName}"
-                   class="text-danger">Error message</small>
+                   id="userName" aria-describedby="userNameHelp"/>
           </div>
 
           <div class="mb-3">
             <label class="form-label" for="password">Password</label>
-            <input th:field="*{password}"
-                   th:errorclass="is-invalid"
-                   type="password"
+            <input type="password"
                    class="form-control text-center"
-                   id="password"/>
-            <small th:if="${#fields.hasErrors('password')}"
-                   th:errors="*{password}"
-                   class="text-danger">Error message</small>
+                   id="password" name="password" aria-describedby="passwordHelp"/>
           </div>
           <button type="submit" class="btn btn-primary">Войти</button>
         </form>
         <button type="submit" class="btn btn-primary"
-        onclick="window.location.href='/register/'">Нет аккаунта? Зарегистрируйтесь!</button>
+                onclick="window.location.href='/register/'">Нет аккаунта? Зарегистрируйтесь!</button>
       </div>
     </div>
   </div>

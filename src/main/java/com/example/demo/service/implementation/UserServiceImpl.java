@@ -1,12 +1,10 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.constants.UserRoles;
 import com.example.demo.domain.Booking;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
-import com.example.demo.repository.BookingRepository;
-import com.example.demo.repository.HotelRepository;
-import com.example.demo.repository.RoomRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.input.BookingPriceForm;
 import com.example.quickstay_contracts.input.UserBookingsForm;
@@ -19,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.net.URL;
 import java.time.LocalDate;
@@ -31,7 +30,14 @@ public class UserServiceImpl implements UserService {
     private HotelRepository hotelRepository;
     private RoomRepository roomRepository;
     private BookingRepository bookingRepository;
+    private UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -53,9 +59,14 @@ public class UserServiceImpl implements UserService {
         this.bookingRepository = bookingRepository;
     }
 
+    @Autowired
+    public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
+        this.userRoleRepository = userRoleRepository;
+    }
+
     @Override
     public User findByUserName(String userName) {
-        return userRepository.findByUserName(userName);
+        return userRepository.findByUserName(userName).get();
     }
 
     @Override
@@ -187,12 +198,16 @@ public class UserServiceImpl implements UserService {
         String firstName = userModel.firstName();
         String lastName = userModel.lastName();
         String userName = userModel.userName();
-        String password = userModel.password();
-        int age = userModel.age();
+        String password = passwordEncoder.encode(userModel.password());
         String strBalance = String.format("%.2f", new Random().nextDouble(100_000));
+        int age = userModel.age();
         double balance = Double.parseDouble(strBalance);
 
+        var userRole = userRoleRepository.findRoleByName(UserRoles.USER).orElseThrow();
+
         User user = new User(firstName, lastName, userName, password, age, balance);
+        user.setRoles(List.of(userRole));
+
         userRepository.save(user);
     }
 }

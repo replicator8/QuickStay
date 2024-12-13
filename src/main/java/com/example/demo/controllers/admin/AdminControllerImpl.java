@@ -7,11 +7,14 @@ import com.example.quickstay_contracts.controllers.AdminController;
 import com.example.quickstay_contracts.input.AdminBookingForm;
 import com.example.quickstay_contracts.viewmodel.AdminBookingListViewModel;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,7 +28,7 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     @GetMapping("/getAdminAvailableBookings")
-    public String getAllBookingsForHotel(@ModelAttribute("adminForm") AdminBookingForm form, Model model) {
+    public String getAllBookingsForHotel(@ModelAttribute("adminForm") AdminBookingForm form, Model model, Principal principal, HttpSession session) {
         var hotelName = form.hotelName() != null ? form.hotelName() : "";
         var page = form.page() != null ? form.page() : 1;
         var size = form.size() != null ? form.size() : 10;
@@ -41,6 +44,9 @@ public class AdminControllerImpl implements AdminController {
                 bookingViewModels,
                 bookings.getTotalPages()
         );
+
+        String userName = principal.getName();
+        session.setAttribute("adminName", userName);
 
         model.addAttribute("adminForm", form);
         model.addAttribute("model", viewModel);

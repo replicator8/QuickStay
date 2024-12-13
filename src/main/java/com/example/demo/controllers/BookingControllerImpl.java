@@ -1,7 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domain.User;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.HotelService;
+import com.example.demo.service.UserService;
 import com.example.quickstay_contracts.controllers.BookingController;
 import com.example.quickstay_contracts.viewmodel.*;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.security.Principal;
 import java.time.LocalDate;
 
 @Controller
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;
     private HotelService hotelService;
+    private UserService userService;
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
@@ -32,10 +36,15 @@ public class BookingControllerImpl implements BookingController {
         this.hotelService = hotelService;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     @GetMapping("/getHotels")
     @Cacheable(value = "hotels")
-    public String getHotels(@ModelAttribute("bookingForm") BookingForm form, Model model) {
+    public String getHotels(@ModelAttribute("bookingForm") BookingForm form, Model model, Principal principal, HttpSession session) {
         var country = form.country() != null ? form.country() : "Россия";
         var city = form.city() != null ? form.city() : "";
         var start = form.start() != null ? form.start() : LocalDate.now();
@@ -60,6 +69,10 @@ public class BookingControllerImpl implements BookingController {
         model.addAttribute("bookingForm", form);
         model.addAttribute("model", viewModel);
         model.addAttribute("title", "Booking");
+
+        User user = userService.findByUserName(principal.getName());
+        session.setAttribute("userUUID", user.getId());
+        System.out.println("USERNAME: " + user.getUserName());
 
         return "booking";
     }
