@@ -72,7 +72,8 @@ public class BookingControllerImpl implements BookingController {
 
         User user = userService.findByUserName(principal.getName());
         session.setAttribute("userUUID", user.getId());
-        System.out.println("USERNAME: " + user.getUserName());
+        session.removeAttribute("successMessage");
+        session.removeAttribute("badMessage");
 
         return "booking";
     }
