@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -27,13 +26,6 @@ public class RoomServiceImpl implements RoomService {
     private HotelRepository hotelRepository;
     private RoomRepository roomRepository;
     private BookingRepository bookingRepository;
-
-    public RoomServiceImpl(UserRepository userRepository, RoomRepository roomRepository, HotelRepository hotelRepository, BookingRepository bookingRepository) {
-        this.userRepository = userRepository;
-        this.roomRepository = roomRepository;
-        this.hotelRepository = hotelRepository;
-        this.bookingRepository = bookingRepository;
-    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {

@@ -9,7 +9,6 @@ import com.example.quickstay_contracts.viewmodel.UserArchiveBookingsViewModel;
 import com.example.quickstay_contracts.viewmodel.UserRegisterForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.time.LocalDate;
 import java.util.List;
 

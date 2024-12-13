@@ -25,13 +25,6 @@ public class BookingServiceImpl implements BookingService {
     private RoomRepository roomRepository;
     private BookingRepository bookingRepository;
 
-    public BookingServiceImpl(UserRepository userRepository, RoomRepository roomRepository, HotelRepository hotelRepository, BookingRepository bookingRepository) {
-        this.userRepository = userRepository;
-        this.roomRepository = roomRepository;
-        this.hotelRepository = hotelRepository;
-        this.bookingRepository = bookingRepository;
-    }
-
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

@@ -4,7 +4,6 @@ import com.example.demo.domain.Room;
 import com.example.quickstay_contracts.input.CustomBookingForm;
 import com.example.quickstay_contracts.viewmodel.RoomViewModelCustom;
 import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 public interface RoomService {

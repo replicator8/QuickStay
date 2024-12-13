@@ -1,6 +1,5 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.constants.RoomType;
 import com.example.demo.domain.Hotel;
 import com.example.demo.domain.Room;
 import com.example.demo.repository.BookingRepository;
@@ -9,7 +8,6 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.HotelService;
 import com.example.quickstay_contracts.viewmodel.RoomBookingForm;
-import com.example.quickstay_contracts.viewmodel.RoomBookingModelFilter;
 import com.example.quickstay_contracts.viewmodel.RoomViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -29,13 +25,6 @@ public class HotelServiceImpl implements HotelService {
     private BookingRepository bookingRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
-
-    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository, BookingRepository bookingRepository, UserRepository userRepository) {
-        this.hotelRepository = hotelRepository;
-        this.roomRepository = roomRepository;
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-    }
 
     @Autowired
     public void setHotelRepository(HotelRepository hotelRepository) {
@@ -108,37 +97,6 @@ public class HotelServiceImpl implements HotelService {
                 .toList();
 
         return new PageImpl<>(availableRooms, pageable, allRooms.getTotalElements());
-    }
-
-    @Override
-    public List<RoomViewModel> getAllFreeRoomsByDatesFilter(RoomBookingModelFilter filter) {
-        String hotelId = filter.hotelUUID();
-        LocalDate startDate = filter.start();
-        LocalDate endDate = filter.end();
-        RoomType type = filter.type();
-        int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
-
-        // get all hotel rooms by type
-        List<Room> allRooms = hotelRepository.getAllRoomsByType(hotelId, type);
-
-        // check if room is available
-        List<Room> availableRooms = allRooms.stream()
-                .filter(room -> bookingRepository.checkAvailabilityForDates(room.getId(), startDate, endDate))
-                .collect(Collectors.toList());
-
-        // map
-        List<RoomViewModel> rooms = new ArrayList<>();
-        for (Room room: availableRooms) {
-            rooms.add(new RoomViewModel(
-                    room.getId(),
-                    room.getRoomType().getRus(),
-                    room.getDescription(),
-                    room.getPrice() * totalDays,
-                    room.getPhoto()
-            ));
-        }
-
-        return rooms;
     }
 
     @Override

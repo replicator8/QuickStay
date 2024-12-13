@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -85,28 +84,10 @@ public class HotelControllerImpl implements HotelController {
         return "hotel";
     }
 
-    // TODO: ~
-    @Override
-    @PostMapping("/getRoomsByDateWithFilter")
-    public List<RoomViewModel> getHotelRoomsByDateWithFilter(@RequestBody RoomBookingModelFilter roomBookingModelFilter) {
-        if (roomBookingModelFilter.start().isAfter(roomBookingModelFilter.end())) {
-            throw new IllegalArgumentException("Неверный порядок дат");
-        }
-
-        if (roomBookingModelFilter.start().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Выберите правильную дату");
-        }
-        List<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDatesFilter(roomBookingModelFilter);
-        // TODO: add to page
-
-        return rooms;
-    }
-
     @PostMapping("/createBooking/{roomUUID}")
     public String createBooking(@PathVariable String roomUUID, @ModelAttribute("hotelBookingForm") BookingPriceForm form, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("hotelBookingForm", form);
-
             return "";
         }
 

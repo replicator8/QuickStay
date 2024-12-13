@@ -24,7 +24,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,13 +32,6 @@ public class UserServiceImpl implements UserService {
     private RoomRepository roomRepository;
     private BookingRepository bookingRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-
-    public UserServiceImpl(UserRepository userRepository, RoomRepository roomRepository, HotelRepository hotelRepository, BookingRepository bookingRepository) {
-        this.userRepository = userRepository;
-        this.roomRepository = roomRepository;
-        this.hotelRepository = hotelRepository;
-        this.bookingRepository = bookingRepository;
-    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
