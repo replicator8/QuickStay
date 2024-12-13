@@ -1,5 +1,7 @@
 package com.example.demo.controllers.admin;
 
+import com.example.demo.domain.Booking;
+import com.example.demo.domain.User;
 import com.example.demo.service.BookingService;
 import com.example.quickstay_contracts.controllers.AdminController;
 import com.example.quickstay_contracts.input.AdminBookingForm;
@@ -50,6 +52,11 @@ public class AdminControllerImpl implements AdminController {
     @Override
     @GetMapping("/cancelBooking/{bookingUUID}")
     public String cancelBooking(@PathVariable String bookingUUID) {
+        Booking booking = bookingService.findById(bookingUUID);
+        User user = booking.getUser();
+        double price = booking.getPrice();
+        user.setBalance(user.getBalance() + price);
+
         bookingService.deleteBooking(bookingUUID);
 
         return "redirect:/admin/getAdminAvailableBookings";
