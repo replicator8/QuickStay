@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDate;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Controller
 @RequestMapping("/bookings")
@@ -25,6 +28,8 @@ public class BookingControllerImpl implements BookingController {
     private BookingService bookingService;
     private HotelService hotelService;
     private UserService userService;
+
+    private static final Logger LOG = LogManager.getLogger(BookingControllerImpl.class);
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
@@ -74,6 +79,8 @@ public class BookingControllerImpl implements BookingController {
         session.setAttribute("userUUID", user.getId());
         session.removeAttribute("successMessage");
         session.removeAttribute("badMessage");
+
+        LOG.log(Level.INFO, "Show all hotels for: " + principal.getName());
 
         return "booking";
     }
