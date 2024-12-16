@@ -45,11 +45,11 @@ public class HotelControllerImpl implements HotelController {
     @GetMapping("/getRoomsByDate")
     public String getHotelRoomsByDate(@ModelAttribute("hotelForm") RoomBookingForm form, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         if (form.start().isAfter(form.end())) {
-            throw new IllegalArgumentException("Неверный порядок дат");
+            return "date-error";
         }
 
         if (form.start().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Выберите правильную дату");
+            return "date-error";
         }
 
         Page<RoomViewModel> rooms = hotelService.getAllFreeRoomsByDates(form);
