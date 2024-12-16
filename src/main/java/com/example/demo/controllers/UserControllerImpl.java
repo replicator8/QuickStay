@@ -9,11 +9,15 @@ import com.example.quickstay_contracts.controllers.UserController;
 import com.example.quickstay_contracts.input.UserBookingsForm;
 import com.example.quickstay_contracts.viewmodel.*;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,6 +26,8 @@ public class UserControllerImpl implements UserController {
     private UserService userService;
     private HotelService hotelService;
     private BookingService bookingService;
+
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -40,7 +46,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/getActiveBookings")
-    public String getActiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session) {
+    public String getActiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session, Principal principal) {
         var userUUID = form.userUUID() != null ? form.userUUID() : (String) session.getAttribute("userUUID");
         var page = form.page() != null ? form.page() : 1;
         var size = form.size() != null ? form.size() : 30;
@@ -73,12 +79,14 @@ public class UserControllerImpl implements UserController {
         model.addAttribute("model", viewModel);
         model.addAttribute("title", "User profile");
 
+        LOG.log(Level.INFO, "Get active bookings for user: " + principal.getName());
+
         return "user";
     }
 
     @Override
     @GetMapping("/getArchiveBookings")
-    public String getArchiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session) {
+    public String getArchiveBookings(@ModelAttribute("userABForm") UserBookingsForm form, Model model, HttpSession session, Principal principal) {
         var userUUID = form.userUUID() != null ? form.userUUID() : (String) session.getAttribute("userUUID");
         var page = form.page() != null ? form.page() : 1;
         var size = form.size() != null ? form.size() : 10;
@@ -109,12 +117,14 @@ public class UserControllerImpl implements UserController {
         model.addAttribute("isArchive", true);
         model.addAttribute("title", "User profile");
 
+        LOG.log(Level.INFO, "Get archive bookings for user: " + principal.getName());
+
         return "user";
     }
 
     @Override
     @GetMapping("/cancelBooking/{bookingUUID}")
-    public String cancelBooking(@PathVariable String bookingUUID) {
+    public String cancelBooking(@PathVariable String bookingUUID, Principal principal) {
         Booking booking = bookingService.findById(bookingUUID);
         User user = booking.getUser();
         double price = booking.getPrice();
@@ -122,20 +132,26 @@ public class UserControllerImpl implements UserController {
 
         bookingService.deleteBooking(bookingUUID);
 
+        LOG.log(Level.INFO, "Cancel booking by bookingUUID: " + bookingUUID + " for user: " + principal.getName());
+
         return "redirect:/users/getActiveBookings";
     }
 
     @Override
     @GetMapping("/rateBooking/{bookingUUID}")
-    public String rateBooking(@PathVariable String bookingUUID, @RequestParam double rating) {
+    public String rateBooking(@PathVariable String bookingUUID, @RequestParam double rating, Principal principal) {
         String hotelUUID = bookingService.findById(bookingUUID).getRoom().getHotel().getId();
         hotelService.updateRating(hotelUUID, rating);
+
+        LOG.log(Level.INFO, "Update rating to " + rating + " by bookingUUID: " + bookingUUID + " for user: " + principal.getName());
 
         return "redirect:/users/getArchiveBookings";
     }
 
     @GetMapping("/logout")
-    public String logOut(HttpSession session) {
+    public String logOut(HttpSession session, Principal principal) {
+        LOG.log(Level.INFO, "Logout for user: " + principal.getName());
+
         session.invalidate();
 
         return "redirect:/login/";
@@ -143,16 +159,22 @@ public class UserControllerImpl implements UserController {
 
     @GetMapping("/getAll")
     List<User> getUsers() {
+        LOG.log(Level.INFO, "Get all users");
+
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
     User getUser(@PathVariable String id) {
+        LOG.log(Level.INFO, "Get user by userUUID: " + id);
+
         return userService.findById(id);
     }
 
     @GetMapping("/getBalance/{userUUID}")
-    Double getBalance(@PathVariable String userUUID) {
+    Double getBalance(@PathVariable String userUUID, Principal principal) {
+        LOG.log(Level.INFO, "Get user balance bu userUUID: " + userUUID);
+
         return userService.getBalanceById(userUUID);
     }
 }
