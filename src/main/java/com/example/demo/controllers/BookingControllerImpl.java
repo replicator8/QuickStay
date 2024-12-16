@@ -29,7 +29,7 @@ public class BookingControllerImpl implements BookingController {
     private HotelService hotelService;
     private UserService userService;
 
-    private static final Logger LOG = LogManager.getLogger(BookingControllerImpl.class);
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
@@ -80,13 +80,13 @@ public class BookingControllerImpl implements BookingController {
         session.removeAttribute("successMessage");
         session.removeAttribute("badMessage");
 
-        LOG.log(Level.INFO, "Show all hotels for: " + principal.getName());
+        LOG.log(Level.INFO, "Show all hotels for user: " + principal.getName());
 
         return "booking";
     }
 
     @GetMapping("/hotelDetails")
-    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String hotelDetails(@RequestParam("hotelName") String hotelName, @RequestParam("hotelDescription") String hotelDescription, @RequestParam("start") String start, @RequestParam("end") String end, HttpSession session, RedirectAttributes redirectAttributes, Principal principal) {
         String hotelUUID = hotelService.findByName(hotelName).getId();
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
@@ -106,6 +106,8 @@ public class BookingControllerImpl implements BookingController {
         redirectAttributes.addFlashAttribute("endLocalDate", endDate);
 
         String userUUID = session.getAttribute("userUUID").toString();
+
+        LOG.log(Level.INFO, "Open Hotel: " + hotelName + " page details for user: " + principal.getName());
 
         return "redirect:/hotel/getRoomsByDate?hotelUUID=" + hotelUUID + "&start=" + start + "&end=" + end + "&page=1&size=10&userUUID=" + userUUID;
     }
