@@ -8,18 +8,22 @@ import com.example.quickstay_contracts.input.AdminBookingForm;
 import com.example.quickstay_contracts.viewmodel.AdminBookingListViewModel;
 import com.example.quickstay_contracts.viewmodel.AdminBookingViewModel;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminControllerImpl implements AdminController {
     private BookingService bookingService;
+
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     @Autowired
     public void setBookingService(BookingService bookingService) {
@@ -52,18 +56,26 @@ public class AdminControllerImpl implements AdminController {
         model.addAttribute("model", viewModel);
         model.addAttribute("title", "Admin");
 
+        if (hotelName.isEmpty()) {
+            LOG.log(Level.INFO, "Get all bookings for admin: " + principal.getName());
+        } else {
+            LOG.log(Level.INFO, "Get all hotel bookings by hotelName: " + hotelName + " for admin: " + principal.getName());
+        }
+
         return "admin";
     }
 
     @Override
     @GetMapping("/cancelBooking/{bookingUUID}")
-    public String cancelBooking(@PathVariable String bookingUUID) {
+    public String cancelBooking(@PathVariable String bookingUUID, Principal principal) {
         Booking booking = bookingService.findById(bookingUUID);
         User user = booking.getUser();
         double price = booking.getPrice();
         user.setBalance(user.getBalance() + price);
 
         bookingService.deleteBooking(bookingUUID);
+
+        LOG.log(Level.INFO, "Admin cancelled booking by bookingUUID: " + bookingUUID + " for admin: " + principal.getName());
 
         return "redirect:/admin/getAdminAvailableBookings";
     }
